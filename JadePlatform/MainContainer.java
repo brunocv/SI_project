@@ -61,7 +61,16 @@ public class MainContainer {
 	}
 
 	public static void main(String[] args) {
-		Coordenadas a = new Coordenadas(1,2);
+
+		MainContainer a = new MainContainer();
+
+		a.initMainContainerInPlatform("localhost", "9888", "MainContainer");
+		a.startAgentInPlatform("Utilizador1", "Agents.AgenteUtilizador",new Object[] {});
+		a.startAgentInPlatform("Estacao1", "Agents.AgenteEstacao",new Object[] {});
+		a.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {});
+		a.startAgentInPlatform("System", "Agents.AgenteSystem",new Object[] {});
+
+		/*Coordenadas a = new Coordenadas(1,2);
 		Coordenadas b = new Coordenadas(3,4);
 		Coordenadas c = new Coordenadas(1,2);
 
@@ -79,6 +88,9 @@ public class MainContainer {
 		Mapa m2 = new Mapa(teste);
 		//erro no equals?
 		System.out.println(m.equals(m2));
-		System.out.println(m.toString());
+		System.out.print(m.toString());
+		System.out.print(m2.toString());
+		*/
+
 	}
 }

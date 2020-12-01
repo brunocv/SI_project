@@ -9,23 +9,34 @@ public class Mapa implements Serializable {
     private Map<Integer,Coordenadas> posicaoEstacoes;
 
     public Mapa(Map<Integer, Coordenadas> pE) {
-        int tamanho = pE.size();
+        if(pE != null){
+            int tamanho = pE.size();
 
-        this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(tamanho);
+            this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(tamanho);
 
-        for (Map.Entry<Integer, Coordenadas> mapEntry : pE.entrySet()) {
-            this.posicaoEstacoes.put(mapEntry.getKey(), mapEntry.getValue().clone());
+            for (Map.Entry<Integer, Coordenadas> mapEntry : pE.entrySet()) {
+                this.posicaoEstacoes.put(mapEntry.getKey(), mapEntry.getValue().clone());
+            }
+        }
+        else{
+            this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(10);
         }
     }
 
     public Mapa(Mapa m){
-        int tamanho = m.getPosicaoEstacoes().size();
+        if(m != null){
+            int tamanho = m.getPosicaoEstacoes().size();
 
-        this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(tamanho);
+            this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(tamanho);
 
-        for (Map.Entry<Integer, Coordenadas> mapEntry : m.getPosicaoEstacoes().entrySet()) {
-            this.posicaoEstacoes.put(mapEntry.getKey(), mapEntry.getValue().clone());
+            for (Map.Entry<Integer, Coordenadas> mapEntry : m.getPosicaoEstacoes().entrySet()) {
+                this.posicaoEstacoes.put(mapEntry.getKey(), mapEntry.getValue().clone());
+            }
         }
+        else{
+            this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(10);
+        }
+
     }
 
     public Mapa() {
@@ -51,6 +62,8 @@ public class Mapa implements Serializable {
         return str.toString();
     }
 
+
+    //ERRADO
     @Override
     public boolean equals(Object o){
         if(this == o) return true;
