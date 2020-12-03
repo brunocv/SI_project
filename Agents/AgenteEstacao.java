@@ -1,5 +1,6 @@
 package Agents;
 
+import JadePlatform.DFManager;
 import Util.Coordenadas;
 import jade.core.Agent;
 
@@ -17,12 +18,16 @@ public class AgenteEstacao extends Agent {
     protected void setup(){
         super.setup();
         System.out.println("Agente estacao entrou: " + getAID().getName());
-        doDelete();
+
+        DFManager.registarAgente(this,"Estacao");
+
+        //doDelete();
     }
 
     protected void takeDown(){
         super.takeDown();
         System.out.println("Agente estacao terminou: " + getAID().getName());
+        DFManager.deRegister(this);
 
     }
 }

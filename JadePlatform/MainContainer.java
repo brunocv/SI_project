@@ -17,6 +17,12 @@ public class MainContainer {
 	Runtime rt;
 	ContainerController container;
 
+	public MainContainer(){
+
+		this.initMainContainerInPlatform("localhost", "9888", "MainContainer");
+
+	}
+
 	public ContainerController initContainerInPlatform(String host, String port, String containerName) {
 		// Get the JADE runtime interface (singleton)
 		this.rt = Runtime.instance();
@@ -60,6 +66,12 @@ public class MainContainer {
 		}
 	}
 
+	public void startInterface(Mapa mapa) {
+
+		this.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {mapa});
+
+	}
+/*
 	public static void main(String[] args) {
 
 		MainContainer a = new MainContainer();
@@ -70,7 +82,7 @@ public class MainContainer {
 		a.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {});
 		a.startAgentInPlatform("System", "Agents.AgenteSystem",new Object[] {});
 
-		/*Coordenadas a = new Coordenadas(1,2);
+		Coordenadas a = new Coordenadas(1,2);
 		Coordenadas b = new Coordenadas(3,4);
 		Coordenadas c = new Coordenadas(1,2);
 
@@ -90,7 +102,7 @@ public class MainContainer {
 		System.out.println(m.equals(m2));
 		System.out.print(m.toString());
 		System.out.print(m2.toString());
-		*/
 
-	}
+
+	}*/
 }

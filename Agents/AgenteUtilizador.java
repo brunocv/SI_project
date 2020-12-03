@@ -16,7 +16,7 @@ public class AgenteUtilizador extends Agent {
     protected void setup(){
         super.setup();
         System.out.println("Agente utilizador entrou: " + getAID().getName());
-        doDelete();
+        //doDelete();
     }
 
     protected void takeDown(){
