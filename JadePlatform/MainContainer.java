@@ -17,12 +17,6 @@ public class MainContainer {
 	Runtime rt;
 	ContainerController container;
 
-	public MainContainer(){
-
-		this.initMainContainerInPlatform("localhost", "9888", "MainContainer");
-
-	}
-
 	public ContainerController initContainerInPlatform(String host, String port, String containerName) {
 		// Get the JADE runtime interface (singleton)
 		this.rt = Runtime.instance();
@@ -44,10 +38,9 @@ public class MainContainer {
 
 		// Create a Profile, where the launch arguments are stored
 		Profile prof = new ProfileImpl();
-
+		prof.setParameter(Profile.CONTAINER_NAME, containerName);
 		prof.setParameter(Profile.MAIN_HOST, host);
 		prof.setParameter(Profile.MAIN_PORT, port);
-		prof.setParameter(Profile.CONTAINER_NAME, containerName);
 		prof.setParameter(Profile.MAIN, "true");
 		prof.setParameter(Profile.GUI, "true");
 
@@ -57,6 +50,36 @@ public class MainContainer {
 
 	}
 
+	public void startSystemAgent(){
+		try {
+			Object[] pass = new Object[1];
+			pass[0] = this;
+			AgentController ac = container.createNewAgent("System","Agents.AgenteSystem", pass);
+			ac.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void startUtilizador(String nome){
+		try {
+			AgentController ac = container.createNewAgent(nome,"Agents.AgenteUtilizador",new Object[0]);
+			ac.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void startAgentInPlatform(String name, String classpath) {
+		try {
+			AgentController ac = container.createNewAgent(name, classpath, new Object[0]);
+			ac.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
 	public void startAgentInPlatform(String name, String classpath, Object[] args) {
 		try {
 			AgentController ac = container.createNewAgent(name, classpath, args);
@@ -70,7 +93,7 @@ public class MainContainer {
 
 		this.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {mapa});
 
-	}
+	}*/
 /*
 	public static void main(String[] args) {
 

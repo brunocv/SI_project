@@ -1,3 +1,4 @@
+import Agents.AgenteSystem;
 import Interface.GUI_mapSize;
 import JadePlatform.MainContainer;
 import Util.Mapa;
@@ -8,6 +9,12 @@ public class MainApp {
 
     private static Mapa mapa;
     private static MainContainer mainContainer;
+
+    public static void agentStartUp(){
+        MainContainer mc = new MainContainer();
+        mc.initMainContainerInPlatform("localhost", "9888", "MainContainer");
+        mc.startSystemAgent();
+    }
 
     public static void main(String[] args){
 
@@ -30,8 +37,9 @@ public class MainApp {
         mapa.mapaMatrix();
         System.out.print("\n\n");
         mapa.generateMapa(0,0,0,1);
-        mapa.mapaMatrixPrint();
+        //mapa.mapaMatrixPrint();
 
+        agentStartUp();
 
         //mainContainer = new MainContainer();
         //mainContainer.startInterface(mapa);
