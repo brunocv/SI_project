@@ -134,7 +134,7 @@ public class AgenteUtilizador extends Agent {
             double n1 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoDestino.getCoordX(),posicaoDestino.getCoordY());
             double n2 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoAtual.getCoordX(),posicaoAtual.getCoordY());
             distanciaPercorrida = n2/n1;
-            System.out.println(distanciaPercorrida);
+            //System.out.println(distanciaPercorrida);
         }
     }
 }
