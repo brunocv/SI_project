@@ -7,7 +7,7 @@ import java.util.Map;
 public class Mapa implements Serializable {
 
     private Map<Integer,Coordenadas> posicaoEstacoes;
-    private int tamanho; //tamanho * 40 + 40 = total tamanho
+    private int tamanho;
     private int estacoes; //estacoes * estacoes = total estacoes
     private boolean escolhido;
     private int[][] zonas;
@@ -28,7 +28,7 @@ public class Mapa implements Serializable {
         }
         else{
             this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(30);
-            this.tamanho = 0;
+            this.tamanho = 40;
             this.estacoes = 2;
             this.escolhido = false;
 
@@ -51,7 +51,7 @@ public class Mapa implements Serializable {
         }
         else{
             this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(30);
-            this.tamanho = 0;
+            this.tamanho = 40;
             this.estacoes = 2;
             this.escolhido = false;
 
@@ -60,7 +60,7 @@ public class Mapa implements Serializable {
 
     public Mapa() {
         this.posicaoEstacoes = new HashMap<>(30);
-        this.tamanho = 0;
+        this.tamanho = 40;
         this.estacoes = 2;
         this.escolhido = false;
     }
@@ -134,12 +134,10 @@ public class Mapa implements Serializable {
 
     public void mapaMatrix(){
 
-        int alocar = (this.tamanho * 40) + 40;
+        this.zonas = new int[this.tamanho][this.tamanho];
 
-        this.zonas = new int[alocar][alocar];
-
-        for(int i = 0; i < alocar; i++) {
-            for(int j = 0; j < alocar; j++) {
+        for(int i = 0; i < this.tamanho; i++) {
+            for(int j = 0; j < this.tamanho; j++) {
                 this.zonas[i][j] = 0;
             }
         }
@@ -148,8 +146,7 @@ public class Mapa implements Serializable {
 
     public void generateMapa(int y,int iteracao,int valor){
 
-        int totalTamanho = (this.tamanho * 40) + 40;
-        int espaco = totalTamanho / this.estacoes;
+        int espaco = this.tamanho / this.estacoes;
 
         if(this.estacoes == 3) espaco++;
 
@@ -157,8 +154,8 @@ public class Mapa implements Serializable {
         System.out.println("Está a dar");
 
         for(int e = 0; e < this.estacoes ; e++){
-            for(int i = e * espaco; i < espaco * (e +1) && i<totalTamanho; i ++){
-                for(int j = y; j < espaco * (iteracao +1) && j<totalTamanho; j++){
+            for(int i = e * espaco; i < espaco * (e +1) && i <this.tamanho; i ++){
+                for(int j = y; j < espaco * (iteracao +1) && j < this.tamanho; j++){
 
                     this.zonas[i][j] = valor;
                 }

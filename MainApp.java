@@ -12,9 +12,8 @@ public class MainApp {
 
     public static void agentStartUp(Mapa mapa){
         MainContainer mc = new MainContainer();
-        mc.initMainContainerInPlatform("localhost", "9888", "MainContainer");
-        mc.startSystemAgent();
         mc.startInterface(mapa);
+        //mc.startSystemAgent();
 
     }
 

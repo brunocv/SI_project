@@ -17,6 +17,12 @@ public class MainContainer {
 	Runtime rt;
 	ContainerController container;
 
+	public MainContainer(){
+
+		initMainContainerInPlatform("localhost", "9888", "MainContainer");
+
+	}
+
 	public ContainerController initContainerInPlatform(String host, String port, String containerName) {
 		// Get the JADE runtime interface (singleton)
 		this.rt = Runtime.instance();

@@ -10,7 +10,9 @@ public class AgenteInterface extends Agent {
     protected void setup(){
         super.setup();
         System.out.println("Agente interface entrou: " + getAID().getName());
-        //doDelete();
+
+        Object[] args = this.getArguments();
+        this.mapa = (Mapa) args[0];
     }
 
     protected void takeDown(){
