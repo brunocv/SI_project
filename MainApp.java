@@ -13,7 +13,7 @@ public class MainApp {
     public static void agentStartUp(Mapa mapa){
         MainContainer mc = new MainContainer();
         mc.startInterface(mapa);
-        //mc.startSystemAgent();
+        mc.startSystemAgent(mapa.getTamanho(), mapa.getEstacoes());
 
     }
 

@@ -72,10 +72,12 @@ public class MainContainer {
 	}
 
 	//ver este pass[0] = this
-	public void startSystemAgent(){
+	public void startSystemAgent(int tamanho_Mapa,int numero_Estacoes){
 		try {
-			Object[] pass = new Object[1];
-			pass[0] = this;
+			Object[] pass = new Object[3]; // argumentos a passar para o agente a ser criado
+			pass[0] = this; // "this" corresponde a esta instância do MainContainer
+			pass[1] = tamanho_Mapa;
+			pass[2] = numero_Estacoes;
 			AgentController ac = container.createNewAgent("System","Agents.AgenteSystem", pass);
 			ac.start();
 		} catch (Exception e) {
@@ -83,9 +85,12 @@ public class MainContainer {
 		}
 	}
 
-	public void startUtilizador(String nome){
+	public void startUtilizador(String nome,int tamanho_Mapa,int numero_Estacoes){
 		try {
-			AgentController ac = container.createNewAgent(nome,"Agents.AgenteUtilizador",new Object[0]);
+			Object[] pass = new Object[2]; // argumentos a passar para o agente a ser criado
+			pass[0] = tamanho_Mapa;
+			pass[1] = numero_Estacoes;
+			AgentController ac = container.createNewAgent(nome,"Agents.AgenteUtilizador",pass);
 			ac.start();
 		} catch (Exception e) {
 			e.printStackTrace();
