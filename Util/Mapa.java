@@ -132,6 +132,7 @@ public class Mapa implements Serializable {
         return new Mapa(this);
     }
 
+    //Alocar com 0's o mapa inicial
     public void mapaMatrix(){
 
         this.zonas = new int[this.tamanho][this.tamanho];
@@ -144,28 +145,32 @@ public class Mapa implements Serializable {
 
     }
 
+    //gerar as posições que cada estação cobre
     public void generateMapa(int y,int iteracao,int valor){
 
         int espaco = this.tamanho / this.estacoes;
 
-        if(this.estacoes == 3) espaco++;
+        if(this.estacoes == 3 && (this.tamanho != 120)) espaco++;
 
         if(iteracao >= this.estacoes) return;
         System.out.println("Está a dar");
 
         for(int e = 0; e < this.estacoes ; e++){
-            for(int i = e * espaco; i < espaco * (e +1) && i <this.tamanho; i ++){
+            for(int i = e * espaco; i < espaco * (e +1) && i < this.tamanho; i ++){
                 for(int j = y; j < espaco * (iteracao +1) && j < this.tamanho; j++){
 
                     this.zonas[i][j] = valor;
                 }
             }
+            Coordenadas c = new Coordenadas(((espaco/2) + (espaco*e)),((espaco*iteracao) + (espaco/2)));
+            this.posicaoEstacoes.put(valor,c);
             valor++;
         }
 
         generateMapa((iteracao+1)*espaco,iteracao+1,valor);
     }
 
+    //imprimir mapa via texto
     public void mapaMatrixPrint(){
 
         for (int[] row : this.zonas) {
@@ -174,6 +179,12 @@ public class Mapa implements Serializable {
                 else System.out.print(x + "  ");
             }
             System.out.print(" \n");
+        }
+    }
+
+    public void printEstacoes(){
+        for (Map.Entry<Integer, Coordenadas> mapEntry : this.posicaoEstacoes.entrySet()) {
+            System.out.print("Estacao: "+mapEntry.getKey() + " Coordenadas: " + mapEntry.getValue().toString());
         }
     }
 }

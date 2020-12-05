@@ -23,6 +23,7 @@ public class MainApp {
         System.out.print("\n\n");
         mapa.generateMapa(0,0,1);
         mapa.mapaMatrixPrint();
+        mapa.printEstacoes();
     }
 
     public static void main(String[] args){
