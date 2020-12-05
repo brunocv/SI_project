@@ -2,6 +2,7 @@ package Agents;
 
 import JadePlatform.MainContainer;
 import Util.Coordenadas;
+import Util.Mapa;
 import Util.Utilidade;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -23,30 +24,28 @@ public class AgenteUtilizador extends Agent {
         System.out.println("Agente utilizador entrou: " + getAID().getName());
 
         Object[] args = getArguments();
-        int tamanho_mapa = (int)args[0];
-        int numero_Estacoes = (int)args[1] * (int)args[1];
+        Mapa mapa = (Mapa)args[0];
+        int tamanho_mapa = mapa.getTamanho();
+        int numero_Estacoes = mapa.getEstacoes();
 
         //A posição inicial e o destino do utilizador vai ser gerado de forma aleatória
         Random rand = new Random();
         int estacao_inicio = 1 + rand.nextInt(numero_Estacoes);
         /*
-        ... Perguntar qual a posição da estação
-         */
+        Vai ao mapa buscar a posição da estação onde começa
+        */
+        Coordenadas inicioEst = mapa.getCoordenadasDaEstacao(estacao_inicio);
 
         int fimX = rand.nextInt(tamanho_mapa);
         int fimY = rand.nextInt(tamanho_mapa);
         /*
-        ... Perguntar qual a estação que controla a area onde ele acaba
+        Vai ao mapa ver qual a estação que controla a posição que lhe calhou
          */
-
-        //Para testar o movimento vou gerar duas random de inicio
-            // depois remover
-        int inicioX = rand.nextInt(tamanho_mapa);
-        int inicioY = rand.nextInt(tamanho_mapa);
+        Coordenadas fimEst = mapa.getEstacaoDaArea(new Coordenadas(fimX,fimY));
 
         //Temporario enquanto não existem estações
-        posicaoInicial = new Coordenadas(inicioX,inicioY);
-        posicaoDestino = new Coordenadas(fimX,fimY);
+        posicaoInicial = new Coordenadas(inicioEst);
+        posicaoDestino = new Coordenadas(fimEst);
         posicaoAtual = new Coordenadas(posicaoInicial);
         estacaoProxima = new Coordenadas(posicaoInicial);
         estacaoDestino = new Coordenadas(posicaoDestino);

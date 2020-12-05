@@ -1,14 +1,14 @@
 package Agents;
 
 import JadePlatform.MainContainer;
+import Util.Mapa;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 
 public class AgenteSystem extends Agent {
 
     private int numero_utilizador;
-    private int tamanho_mapa;
-    private int numero_Estacoes;
+    private Mapa mapa;
     private MainContainer mc;
 
     protected void setup() {
@@ -16,8 +16,7 @@ public class AgenteSystem extends Agent {
 
         Object[] args = getArguments();
         mc = (MainContainer)args[0];
-        tamanho_mapa = (int)args[1];
-        numero_Estacoes = (int)args[2];
+        mapa = (Mapa)args[1];
 
         System.out.println("Agente System entrou: " + getAID().getName());
 
@@ -38,7 +37,7 @@ public class AgenteSystem extends Agent {
 
         protected void onTick(){
             String nome = "Utilizador"+numero_utilizador;
-            mc.startUtilizador(nome,tamanho_mapa,numero_Estacoes);
+            mc.startUtilizador(nome,mapa);
             System.out.println("Agente Utilizador "+numero_utilizador+" criado.");
             numero_utilizador++;
         }
