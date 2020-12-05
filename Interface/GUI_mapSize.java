@@ -24,7 +24,7 @@ public class GUI_mapSize extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.tamanho = 0;
-        this.estacoes = 1;
+        this.estacoes = 2;
 
         cbTamanho.addActionListener(new ActionListener() {
             @Override

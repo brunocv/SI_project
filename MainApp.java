@@ -18,6 +18,14 @@ public class MainApp {
 
     }
 
+    public static void generateMapa(){
+        System.out.println(mapa.toString());
+        mapa.mapaMatrix();
+        System.out.print("\n\n");
+        mapa.generateMapa(0,0,1);
+        mapa.mapaMatrixPrint();
+    }
+
     public static void main(String[] args){
 
         mapa = new Mapa();
@@ -35,12 +43,7 @@ public class MainApp {
             System.out.println("Não foi desta!");
         }
 
-        System.out.println(mapa.toString());
-        mapa.mapaMatrix();
-        System.out.print("\n\n");
-        mapa.generateMapa(0,0,1);
-        mapa.mapaMatrixPrint();
-
+        generateMapa();
         agentStartUp(mapa);
 
     }
