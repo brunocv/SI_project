@@ -187,4 +187,8 @@ public class Mapa implements Serializable {
             System.out.print("Estacao: "+mapEntry.getKey() + " Coordenadas: " + mapEntry.getValue().toString());
         }
     }
+
+    public Coordenadas getCoordenadasDaEstacao(int numeroEstacao){ return posicaoEstacoes.get(numeroEstacao); }
+    public Coordenadas getEstacaoDaArea(Coordenadas posicao) { return posicaoEstacoes.get(zonas[posicao.getCoordX()][posicao.getCoordY()]); }
+
 }
