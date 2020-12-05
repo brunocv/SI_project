@@ -7,7 +7,7 @@ import java.util.Map;
 public class Mapa implements Serializable {
 
     private Map<Integer,Coordenadas> posicaoEstacoes;
-    private int tamanho; //tamanho * 100 + 100 = total tamanho
+    private int tamanho; //tamanho * 40 + 40 = total tamanho
     private int estacoes; //estacoes * estacoes = total estacoes
     private boolean escolhido;
     private int[][] zonas;
@@ -133,9 +133,8 @@ public class Mapa implements Serializable {
     }
 
     public void mapaMatrix(){
-        //PARA TESTAR
-        //int alocar = (this.tamanho * 10) + 10;
-        int alocar = (this.tamanho * 100) + 100;
+
+        int alocar = (this.tamanho * 40) + 40;
 
         this.zonas = new int[alocar][alocar];
 
@@ -144,25 +143,20 @@ public class Mapa implements Serializable {
                 this.zonas[i][j] = 0;
             }
         }
-       // for (Map.Entry<Integer, Coordenadas> mapEntry : this.posicaoEstacoes.entrySet()) {
-         //   this.zonas[mapEntry.getValue().getCoordX()][mapEntry.getValue().getCoordY()] = mapEntry.getKey();
-       // }
-
 
     }
 
-    public void generateMapa(int y,int e,int iteracao,int valor){
-        //PARA TESTAR
-        int totalTamanho = (this.tamanho * 100) + 100;
-        //int totalTamanho = (this.tamanho*10 + 10);
+    public void generateMapa(int y,int iteracao,int valor){
+
+        int totalTamanho = (this.tamanho * 40) + 40;
         int espaco = totalTamanho / this.estacoes;
 
         if(this.estacoes == 3) espaco++;
-        if(this.estacoes == 4) espaco++;
 
         if(iteracao >= this.estacoes) return;
         System.out.println("Está a dar");
-        for(; e < this.estacoes ; e++){
+
+        for(int e = 0; e < this.estacoes ; e++){
             for(int i = e * espaco; i < espaco * (e +1) && i<totalTamanho; i ++){
                 for(int j = y; j < espaco * (iteracao +1) && j<totalTamanho; j++){
 
@@ -172,7 +166,7 @@ public class Mapa implements Serializable {
             valor++;
         }
 
-        generateMapa((iteracao+1)*espaco,0,iteracao+1,valor);
+        generateMapa((iteracao+1)*espaco,iteracao+1,valor);
     }
 
     public void mapaMatrixPrint(){

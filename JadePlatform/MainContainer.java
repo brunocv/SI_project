@@ -50,6 +50,22 @@ public class MainContainer {
 
 	}
 
+	public void startAgentInPlatform(String name, String classpath, Object[] args) {
+		try {
+			AgentController ac = container.createNewAgent(name, classpath, args);
+			ac.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void startInterface(Mapa mapa) {
+
+		this.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {mapa});
+
+	}
+
+	//ver este pass[0] = this
 	public void startSystemAgent(){
 		try {
 			Object[] pass = new Object[1];
@@ -70,62 +86,5 @@ public class MainContainer {
 		}
 	}
 
-	public void startAgentInPlatform(String name, String classpath) {
-		try {
-			AgentController ac = container.createNewAgent(name, classpath, new Object[0]);
-			ac.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	/*
-	public void startAgentInPlatform(String name, String classpath, Object[] args) {
-		try {
-			AgentController ac = container.createNewAgent(name, classpath, args);
-			ac.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void startInterface(Mapa mapa) {
-
-		this.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {mapa});
-
-	}*/
-/*
-	public static void main(String[] args) {
-
-		MainContainer a = new MainContainer();
-
-		a.initMainContainerInPlatform("localhost", "9888", "MainContainer");
-		a.startAgentInPlatform("Utilizador1", "Agents.AgenteUtilizador",new Object[] {});
-		a.startAgentInPlatform("Estacao1", "Agents.AgenteEstacao",new Object[] {});
-		a.startAgentInPlatform("Interface", "Agents.AgenteInterface",new Object[] {});
-		a.startAgentInPlatform("System", "Agents.AgenteSystem",new Object[] {});
-
-		Coordenadas a = new Coordenadas(1,2);
-		Coordenadas b = new Coordenadas(3,4);
-		Coordenadas c = new Coordenadas(1,2);
-
-		Map<Integer,Coordenadas> teste = new HashMap<>(10);
-		teste.put(1,a);
-		teste.put(2,b);
-		teste.put(3,c);
-
-		Map<Integer,Coordenadas> teste2 = new HashMap<>(10);
-		teste2.put(1,a);
-		teste2.put(2,b);
-		teste2.put(3,c);
-
-		Mapa m = new Mapa(teste);
-		Mapa m2 = new Mapa(teste);
-		//erro no equals?
-		System.out.println(m.equals(m2));
-		System.out.print(m.toString());
-		System.out.print(m2.toString());
-
-
-	}*/
 }

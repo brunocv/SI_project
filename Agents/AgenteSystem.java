@@ -7,13 +7,13 @@ import jade.core.behaviours.TickerBehaviour;
 public class AgenteSystem extends Agent {
 
     private int numero_utilizador;
-    private MainContainer mcc;
+    private MainContainer mc;
 
     protected void setup() {
         super.setup();
 
         Object[] args = getArguments();
-        mcc = (MainContainer)args[0];
+        mc = (MainContainer)args[0];
 
         System.out.println("Agente System entrou: " + getAID().getName());
 
@@ -34,7 +34,7 @@ public class AgenteSystem extends Agent {
 
         protected void onTick(){
             String nome = "Utilizador"+numero_utilizador;
-            mcc.startUtilizador(nome);
+            mc.startUtilizador(nome);
             System.out.println("Agente Utilizador "+numero_utilizador+" criado.");
             numero_utilizador++;
         }

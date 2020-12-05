@@ -10,10 +10,12 @@ public class MainApp {
     private static Mapa mapa;
     private static MainContainer mainContainer;
 
-    public static void agentStartUp(){
+    public static void agentStartUp(Mapa mapa){
         MainContainer mc = new MainContainer();
         mc.initMainContainerInPlatform("localhost", "9888", "MainContainer");
         mc.startSystemAgent();
+        mc.startInterface(mapa);
+
     }
 
     public static void main(String[] args){
@@ -36,12 +38,10 @@ public class MainApp {
         System.out.println(mapa.toString());
         mapa.mapaMatrix();
         System.out.print("\n\n");
-        mapa.generateMapa(0,0,0,1);
-        //mapa.mapaMatrixPrint();
+        mapa.generateMapa(0,0,1);
+        mapa.mapaMatrixPrint();
 
-        agentStartUp();
+        agentStartUp(mapa);
 
-        //mainContainer = new MainContainer();
-        //mainContainer.startInterface(mapa);
     }
 }
