@@ -27,6 +27,12 @@ public class Cell {
         this.image();
     }
 
+    public void setTipo(int tipo){
+
+        this.tipo = tipo;
+
+    }
+
     public void setCoordenadas(Coordenadas c){
         this.coord = c;
     }
@@ -37,6 +43,7 @@ public class Cell {
 
     public void image(){
         String s = "Images/floor.png";
+        if(this.tipo == 1) s = "Images/station.png";
 
         BufferedImage i = null;
         try {

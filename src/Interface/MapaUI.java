@@ -19,7 +19,7 @@ public class MapaUI {
         this.jpanel = new JPanel();
         this.jpanel.setLayout(new GridLayout(this.mapa.getTamanho(), this.mapa.getTamanho()));
 
-        this.jpanel.setBounds(20, 20, 960, 960);
+        this.jpanel.setBounds(20, 20, 1060, 960);
         this.cell = new Cell[this.mapa.getTamanho()][this.mapa.getTamanho()];
 
         initCell();
@@ -35,18 +35,17 @@ public class MapaUI {
             }
         }
 
-       // draw(1,mapa.getPosicaoEstacoes());
+       draw(1,mapa.getPosicaoEstacoes());
     }
-/*
+
     public void draw(int objeto, Map<Integer,Coordenadas> estacoes){
         for (Map.Entry<Integer, Coordenadas> mapEntry : estacoes.entrySet()) {
             Cell c = this.cell[mapEntry.getValue().getCoordX()][mapEntry.getValue().getCoordY()];
-
+            c.setTipo(objeto);
+            c.image();
         }
 
     }
-    */
-
 
     public JPanel getPanel(){
         return this.jpanel;
