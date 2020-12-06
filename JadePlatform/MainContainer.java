@@ -96,4 +96,20 @@ public class MainContainer {
 	}
 
 
+	public void startEstacao(int numeroEstacao, Mapa mapa,Map<String,Double> ocupEst) {
+		try {
+			String nome = "Estacao "+numeroEstacao;
+
+			Object[] pass = new Object[3]; // argumentos a passar para o agente a ser criado
+			pass[0] = mapa.getCoordenadasDaEstacao(numeroEstacao);
+			pass[1] = mapa.getZonasDaEstacao(numeroEstacao);
+			pass[2] = ocupEst;
+
+			AgentController ac = container.createNewAgent(nome,"Agents.AgenteEstacao",pass);
+			ac.start();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
