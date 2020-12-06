@@ -35,7 +35,7 @@ public class UI {
         mainFrame.setTitle("Sistema de Partilha de Bicicletas");
         mainFrame.getContentPane().setLayout(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1600,1000);
+        mainFrame.setSize(1600,1100);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.getContentPane().add(mapaui.getPanel());
 

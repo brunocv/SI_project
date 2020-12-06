@@ -36,21 +36,21 @@ public class Cell {
     }
 
     public void image(){
+        String s = "Images/floor.png";
 
         BufferedImage i = null;
         try {
-            String s = "/home/dreamerz/IdeaProjects/Trabalho_SI/src/Images/floor.png";
-            System.out.println("Deu");
+
             i = ImageIO.read(new File(s));
-            System.out.println("fasfsaf");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Image dimg = i.getScaledInstance(800/this.tamanho, 800/this.tamanho, Image.SCALE_SMOOTH);
+        Image dimg = i.getScaledInstance(960/this.tamanho, 960/this.tamanho, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(dimg);
 
-        //ImageIcon imageIcon = new ImageIcon(new ImageIcon("Images/floor.png").getImage().getScaledInstance(800/this.tamanho, 800/this.tamanho, Image.SCALE_DEFAULT));
+        //ImageIcon imageIcon = new ImageIcon(new ImageIcon("Images/floor.png").getImage().getScaledInstance(960/this.tamanho, 960/this.tamanho, Image.SCALE_SMOOTH));
         this.label.setIcon(imageIcon);
     }
 

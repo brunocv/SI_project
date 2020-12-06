@@ -19,7 +19,7 @@ public class MapaUI {
         this.jpanel = new JPanel();
         this.jpanel.setLayout(new GridLayout(this.mapa.getTamanho(), this.mapa.getTamanho()));
 
-        this.jpanel.setBounds(20, 20, 800, 800);
+        this.jpanel.setBounds(20, 20, 960, 960);
         this.cell = new Cell[this.mapa.getTamanho()][this.mapa.getTamanho()];
 
         initCell();
