@@ -71,7 +71,7 @@ public class MainContainer {
 
 	}
 
-	//ver este pass[0] = this
+
 	public void startSystemAgent(Mapa mapa){
 		try {
 			Object[] pass = new Object[2]; // argumentos a passar para o agente a ser criado

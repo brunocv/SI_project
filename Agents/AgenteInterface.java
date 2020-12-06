@@ -25,7 +25,7 @@ public class AgenteInterface extends Agent {
     }
 
     public void startUI(){
-        this.ui = new UI(mapa);
+        this.ui = new UI(mapa,this);
         this.ui.getJFrame().setVisible(true);
     }
 }

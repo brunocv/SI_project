@@ -16,8 +16,6 @@ public class MainApp {
     public static void agentStartUp(Mapa mapa){
         MainContainer mc = new MainContainer();
 
-        mc.startInterface(mapa);
-
         /*
             Começar a criação de estações
             O primeiro ciclo for serve para não o estar a fazer todas as vezes que se cria uma estação nova...
@@ -38,6 +36,7 @@ public class MainApp {
         try{ Thread.sleep(1000); } //Sleep para dar tempo as estaçôes de se inscreverem nas Paginas Amarelas
         catch(Exception e){ e.printStackTrace(); }
 
+        mc.startInterface(mapa);
         //mc.startSystemAgent(mapa);
 
     }
