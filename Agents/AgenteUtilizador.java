@@ -31,19 +31,27 @@ public class AgenteUtilizador extends Agent {
         //A posição inicial e o destino do utilizador vai ser gerado de forma aleatória
         Random rand = new Random();
         int estacao_inicio = 1 + rand.nextInt(numero_Estacoes);
+
         /*
         Vai ao mapa buscar a posição da estação onde começa
         */
         Coordenadas inicioEst = mapa.getCoordenadasDaEstacao(estacao_inicio);
 
-        int fimX = rand.nextInt(tamanho_mapa);
-        int fimY = rand.nextInt(tamanho_mapa);
+        int fimX = rand.nextInt(tamanho_mapa);//Gerar uma posição de fim random
+        int fimY = rand.nextInt(tamanho_mapa);//.........
+
         /*
         Vai ao mapa ver qual a estação que controla a posição que lhe calhou
          */
         Coordenadas fimEst = mapa.getEstacaoDaArea(new Coordenadas(fimX,fimY));
+        while( (inicioEst.getCoordX() == fimEst.getCoordX()) && (inicioEst.getCoordY() == fimEst.getCoordY()) ){
+            fimX = rand.nextInt(tamanho_mapa);
+            fimY = rand.nextInt(tamanho_mapa);
 
-        //Temporario enquanto não existem estações
+            fimEst = mapa.getEstacaoDaArea(new Coordenadas(fimX,fimY));
+        } // Este While serve para garantir que cada utilizador não escolhe como destino a estação onde começou
+
+
         posicaoInicial = new Coordenadas(inicioEst);
         posicaoDestino = new Coordenadas(fimEst);
         posicaoAtual = new Coordenadas(posicaoInicial);
@@ -129,7 +137,7 @@ public class AgenteUtilizador extends Agent {
                 doDelete();
             }
             //System.out.println("Agente utilizador: " + getAID().getName()+" moveu para: X="+posicaoAtual.getCoordX()+"Y="+posicaoAtual.getCoordY()+".");
-            Utilidade ut = new Utilidade();
+            Utilidade ut = new Utilidade(); // Calcular a distância entre 2 pontos para saber a % de caminho já percorrida
             double n1 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoDestino.getCoordX(),posicaoDestino.getCoordY());
             double n2 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoAtual.getCoordX(),posicaoAtual.getCoordY());
             distanciaPercorrida = n2/n1;

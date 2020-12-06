@@ -20,7 +20,7 @@ public class AgenteSystem extends Agent {
 
         System.out.println("Agente System entrou: " + getAID().getName());
 
-        numero_utilizador = 0;
+        numero_utilizador = 1;
         this.addBehaviour(new gerarUtilizadores(this,7500));
 
         //doDelete();
