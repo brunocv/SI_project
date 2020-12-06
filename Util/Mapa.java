@@ -1,7 +1,9 @@
 package Util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Mapa implements Serializable {
@@ -190,5 +192,15 @@ public class Mapa implements Serializable {
 
     public Coordenadas getCoordenadasDaEstacao(int numeroEstacao){ return posicaoEstacoes.get(numeroEstacao); }
     public Coordenadas getEstacaoDaArea(Coordenadas posicao) { return posicaoEstacoes.get(zonas[posicao.getCoordX()][posicao.getCoordY()]); }
+
+    public List<Coordenadas> getZonasDaEstacao(int numeroEstacao){
+        List<Coordenadas> toReturn = new ArrayList<>();
+        for(int x=0 ; x<tamanho; x++)
+            for(int y=0; y<tamanho; y++)
+                if(zonas[x][y] == numeroEstacao)
+                    toReturn.add(new Coordenadas(x,y));
+
+        return  toReturn;
+    }
 
 }
