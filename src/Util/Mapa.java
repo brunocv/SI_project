@@ -190,7 +190,11 @@ public class Mapa implements Serializable {
         }
     }
 
-    public Coordenadas getCoordenadasDaEstacao(int numeroEstacao){ return posicaoEstacoes.get(numeroEstacao); }
+    public Coordenadas getCoordenadasDaEstacao(int numeroEstacao){
+        return posicaoEstacoes.get(numeroEstacao).clone();
+    }
+
+
     public Coordenadas getEstacaoDaArea(Coordenadas posicao) { return posicaoEstacoes.get(zonas[posicao.getCoordX()][posicao.getCoordY()]); }
 
     public List<Coordenadas> getZonasDaEstacao(int numeroEstacao){

@@ -29,7 +29,6 @@ public class MainApp {
         }
 
         for(int i=0;i<numeroDeEstacoes;i++){ // Dar startUp a todas as estações
-            String nome = "Estacao "+(i+1);
             mc.startEstacao((i+1),mapa,ocupacaoEstacoes);
         }
 
@@ -37,7 +36,7 @@ public class MainApp {
         catch(Exception e){ e.printStackTrace(); }
 
         mc.startInterface(mapa);
-        //mc.startSystemAgent(mapa);
+        mc.startSystemAgent(mapa);
 
     }
 
@@ -64,7 +63,6 @@ public class MainApp {
             catch(Exception e){
                 e.printStackTrace();
             }
-            System.out.println("Não foi desta!");
         }
 
         generateMapa();

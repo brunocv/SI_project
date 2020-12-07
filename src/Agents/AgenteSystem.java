@@ -23,6 +23,7 @@ public class AgenteSystem extends Agent {
         numero_utilizador = 1;
         this.addBehaviour(new gerarUtilizadores(this,7500));
 
+
         //doDelete();
     }
 
@@ -36,10 +37,13 @@ public class AgenteSystem extends Agent {
         public gerarUtilizadores(Agent a,long timeout) {super(a,timeout);}
 
         protected void onTick(){
+
             String nome = "Utilizador"+numero_utilizador;
             mc.startUtilizador(nome,mapa);
             System.out.println("Agente Utilizador "+numero_utilizador+" criado.");
+            if(numero_utilizador == 2) doDelete();
             numero_utilizador++;
+
         }
     }
 }

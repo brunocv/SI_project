@@ -26,7 +26,7 @@ public class AgenteUtilizador extends Agent {
         Object[] args = getArguments();
         Mapa mapa = (Mapa)args[0];
         int tamanho_mapa = mapa.getTamanho();
-        int numero_Estacoes = mapa.getEstacoes();
+        int numero_Estacoes = mapa.getEstacoes() * mapa.getEstacoes() ;
 
         //A posição inicial e o destino do utilizador vai ser gerado de forma aleatória
         Random rand = new Random();
@@ -44,7 +44,7 @@ public class AgenteUtilizador extends Agent {
         Vai ao mapa ver qual a estação que controla a posição que lhe calhou
          */
         Coordenadas fimEst = mapa.getEstacaoDaArea(new Coordenadas(fimX,fimY));
-        while( (inicioEst.getCoordX() == fimEst.getCoordX()) && (inicioEst.getCoordY() == fimEst.getCoordY()) ){
+        while( fimEst.equals(inicioEst)){
             fimX = rand.nextInt(tamanho_mapa);
             fimY = rand.nextInt(tamanho_mapa);
 
@@ -53,14 +53,16 @@ public class AgenteUtilizador extends Agent {
 
 
         posicaoInicial = new Coordenadas(inicioEst);
-        posicaoDestino = new Coordenadas(fimEst);
+        posicaoDestino = new Coordenadas(fimX,fimY);
         posicaoAtual = new Coordenadas(posicaoInicial);
         estacaoProxima = new Coordenadas(posicaoInicial);
-        estacaoDestino = new Coordenadas(posicaoDestino);
+        estacaoDestino = new Coordenadas(fimEst);
         distanciaPercorrida = 0;
         aceitouIncentivo = 0;
 
-        //System.out.println("My Destino: X="+posicaoDestino.getCoordX()+"Y="+posicaoDestino.getCoordY()+".");
+        System.out.println("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
+        System.out.println("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
+        System.out.println("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
 
         this.addBehaviour(new Movimento(this,500));
 
@@ -82,6 +84,7 @@ public class AgenteUtilizador extends Agent {
             int destinoX = estacaoDestino.getCoordX();
             int destinoY = estacaoDestino.getCoordY();
 
+            System.out.println("UTILIZADOR POSICAO ATUAL " + posicaoAtual.toString());
             Random rand = new Random(); // O random vai ser usado para poder haver um movimento mais variado
                                         // isto é, para não estar sempre a se mover da mesma maneira.
 
