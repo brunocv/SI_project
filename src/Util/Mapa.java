@@ -197,6 +197,11 @@ public class Mapa implements Serializable {
 
     public Coordenadas getEstacaoDaArea(Coordenadas posicao) { return posicaoEstacoes.get(zonas[posicao.getCoordX()][posicao.getCoordY()]); }
 
+    public String getNomeEstacao(Coordenadas posicao){
+        int numero = zonas[posicao.getCoordX()][posicao.getCoordY()];
+        return ("Estacao "+numero);
+    }
+
     public List<Coordenadas> getZonasDaEstacao(int numeroEstacao){
         List<Coordenadas> toReturn = new ArrayList<>();
         for(int x=0 ; x<tamanho; x++)

@@ -41,9 +41,7 @@ public class AgenteSystem extends Agent {
             String nome = "Utilizador"+numero_utilizador;
             mc.startUtilizador(nome,mapa);
             System.out.println("Agente Utilizador "+numero_utilizador+" criado.");
-            if(numero_utilizador == 2) doDelete();
-            numero_utilizador++;
-
+            numero_utilizador++; 
         }
     }
 }

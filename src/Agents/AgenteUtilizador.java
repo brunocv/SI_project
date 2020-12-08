@@ -4,8 +4,15 @@ import JadePlatform.MainContainer;
 import Util.Coordenadas;
 import Util.Mapa;
 import Util.Utilidade;
+import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
 
 import java.util.Random;
 
@@ -14,8 +21,9 @@ public class AgenteUtilizador extends Agent {
     private Coordenadas posicaoInicial;
     private Coordenadas posicaoAtual;
     private Coordenadas posicaoDestino;
-    private Coordenadas estacaoDestino;
     private Coordenadas estacaoProxima;
+    private Coordenadas estacaoDestino;
+    private String nomeEstacaoDestino;
     private double distanciaPercorrida;
     private int aceitouIncentivo;
 
@@ -31,6 +39,15 @@ public class AgenteUtilizador extends Agent {
         //A posição inicial e o destino do utilizador vai ser gerado de forma aleatória
         Random rand = new Random();
         int estacao_inicio = 1 + rand.nextInt(numero_Estacoes);
+
+        /*
+            Vai perguntar à estação se ela possui bicicletas suficientes para poder começar lá
+        */
+        int resposta = perguntaBicicleta(estacao_inicio);
+        while(resposta == 0){ // Este ciclo while vai garantir que começa numa estação com bicicletas
+            estacao_inicio = 1 + rand.nextInt(numero_Estacoes);
+            resposta = perguntaBicicleta(estacao_inicio);
+        }
 
         /*
         Vai ao mapa buscar a posição da estação onde começa
@@ -57,22 +74,38 @@ public class AgenteUtilizador extends Agent {
         posicaoAtual = new Coordenadas(posicaoInicial);
         estacaoProxima = new Coordenadas(posicaoInicial);
         estacaoDestino = new Coordenadas(fimEst);
+        nomeEstacaoDestino = mapa.getNomeEstacao(estacaoDestino);
         distanciaPercorrida = 0;
         aceitouIncentivo = 0;
 
-        System.out.println("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
-        System.out.println("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
-        System.out.println("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
+        //System.out.println("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
+        //System.out.println("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
+        //System.out.println("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
 
         this.addBehaviour(new Movimento(this,500));
-
-        //doDelete();
     }
 
     protected void takeDown(){
         super.takeDown();
         System.out.println("Agente utilizador terminou: " + getAID().getName());
 
+    }
+
+    private int perguntaBicicleta(int estacao_inicio) {
+
+        String estacao = "Estacao "+estacao_inicio;
+
+        AID receiver = new AID();
+        receiver.setLocalName(estacao);
+        ACLMessage aEnviar = new ACLMessage(ACLMessage.REQUEST);
+        aEnviar.addReceiver(receiver);
+        aEnviar.setContent("Request para começar.");
+        this.send(aEnviar);
+
+        ACLMessage confirmation = receive();
+        while(confirmation == null){confirmation = receive();}
+
+        return Integer.parseInt(confirmation.getContent());
     }
 
     private class Movimento extends TickerBehaviour{
@@ -84,7 +117,7 @@ public class AgenteUtilizador extends Agent {
             int destinoX = estacaoDestino.getCoordX();
             int destinoY = estacaoDestino.getCoordY();
 
-            System.out.println("UTILIZADOR POSICAO ATUAL " + posicaoAtual.toString());
+            //System.out.println("UTILIZADOR POSICAO ATUAL " + posicaoAtual.toString());
             Random rand = new Random(); // O random vai ser usado para poder haver um movimento mais variado
                                         // isto é, para não estar sempre a se mover da mesma maneira.
 
@@ -137,14 +170,73 @@ public class AgenteUtilizador extends Agent {
                                                         }
             if( atualX == destinoX && atualY == destinoY){
                 System.out.println("Agente utilizador: " + getAID().getName()+" chegou ao destino: X="+posicaoAtual.getCoordX()+"Y="+posicaoAtual.getCoordY()+".");
-                doDelete();
+                //doDelete();
+                myAgent.addBehaviour(new InformarFim(nomeEstacaoDestino));
             }
-            //System.out.println("Agente utilizador: " + getAID().getName()+" moveu para: X="+posicaoAtual.getCoordX()+"Y="+posicaoAtual.getCoordY()+".");
+
             Utilidade ut = new Utilidade(); // Calcular a distância entre 2 pontos para saber a % de caminho já percorrida
             double n1 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoDestino.getCoordX(),posicaoDestino.getCoordY());
             double n2 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoAtual.getCoordX(),posicaoAtual.getCoordY());
             distanciaPercorrida = n2/n1;
-            //System.out.println(distanciaPercorrida);
+
+            myAgent.addBehaviour(new InformarMovimento(distanciaPercorrida,posicaoAtual));
+        }
+    }
+
+    private class InformarMovimento extends OneShotBehaviour{
+
+        double dtPercorrida;
+        Coordenadas posAtual;
+
+        public InformarMovimento(double distanciaPercorrida, Coordenadas posicaoAtual){
+            dtPercorrida = distanciaPercorrida;
+            posAtual = posicaoAtual.clone();
+        }
+
+        public void action(){
+            try {
+                //Construir a descrição de agente Estação
+                DFAgentDescription dfd = new DFAgentDescription();
+                ServiceDescription sd = new ServiceDescription();
+                sd.setType("Estacao");
+                dfd.addServices(sd);
+
+
+                //Array de Resultados da procura por estações
+                DFAgentDescription[] resultados = DFService.search(myAgent, dfd);
+
+                //Mandar mensagem a todas as Estações
+                for (int i = 0; i < resultados.length; i++) {
+                    DFAgentDescription dfd1 = resultados[i];
+                    AID estacao = dfd1.getName();
+
+                    String mensagem = "Nova Posicao: &"+posAtual.getCoordX()+"$ %"+posAtual.getCoordY()+"! ?"+aceitouIncentivo+"<";
+
+                    ACLMessage aEnviar = new ACLMessage(ACLMessage.INFORM);
+                    aEnviar.addReceiver(estacao);
+                    aEnviar.setContent(mensagem);
+                    myAgent.send(aEnviar);
+                }
+            } catch (FIPAException fe){ fe.printStackTrace(); }
+        }
+    }
+
+    private class InformarFim extends OneShotBehaviour{
+
+        private String nomeEstacao;
+
+        public InformarFim(String nome){
+            nomeEstacao = nome;
+        }
+
+        public void action(){
+            AID receiver = new AID();
+            receiver.setLocalName(nomeEstacao);
+            ACLMessage aEnviar = new ACLMessage(ACLMessage.INFORM);
+            aEnviar.addReceiver(receiver);
+            aEnviar.setContent("Cheguei ao destino.");
+            myAgent.send(aEnviar);
+            myAgent.doDelete();
         }
     }
 }
