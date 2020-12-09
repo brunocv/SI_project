@@ -21,7 +21,7 @@ public class AgenteSystem extends Agent {
         System.out.println("Agente System entrou: " + getAID().getName());
 
         numero_utilizador = 1;
-        this.addBehaviour(new gerarUtilizadores(this,7500));
+        this.addBehaviour(new gerarUtilizadores(this,10000));
 
 
         //doDelete();
@@ -41,6 +41,7 @@ public class AgenteSystem extends Agent {
             String nome = "Utilizador"+numero_utilizador;
             mc.startUtilizador(nome,mapa);
             System.out.println("Agente Utilizador "+numero_utilizador+" criado.");
+            if(numero_utilizador==3) doDelete();
             numero_utilizador++; 
         }
     }

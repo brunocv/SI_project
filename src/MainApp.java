@@ -24,7 +24,7 @@ public class MainApp {
         Map<String,Double> ocupacaoEstacoes = new HashMap<>();
         for(int i=0;i<numeroDeEstacoes;i++){
             String nome = "Estacao "+(i+1);
-            ocupacaoEstacoes.put(nome,(double)50); // No inicio do sistema, todas as estações tem 50% das sua capacidade maxima
+            ocupacaoEstacoes.put(nome,(double)0.50); // No inicio do sistema, todas as estações tem 50% das sua capacidade maxima
                                                    // Pode-se mudar depois se 50 for demasiado baixo...
         }
 

@@ -35,6 +35,7 @@ public class AgenteEstacao extends Agent {
         utilizadorNaArea = new HashMap<>();
 
         this.addBehaviour(new ReceiveMessages());
+        this.addBehaviour(new ReceivePedidoOcupacao());
     }
 
     protected void takeDown(){
@@ -101,8 +102,8 @@ public class AgenteEstacao extends Agent {
                         int index5 = mensagem.indexOf("?")+1;
                         int index6 = mensagem.indexOf("<");
 
-                        String endereço = myAgent.getAID().getName();
-                        int numero = Integer.parseInt(endereço.substring(endereço.indexOf(" ")+1,endereço.indexOf("@")));
+                        String endereco = myAgent.getAID().getName();
+                        int numero = Integer.parseInt(endereco.substring(endereco.indexOf(" ")+1,endereco.indexOf("@")));
                         // ^^^^ Numero da estação
 
                         int novoX = Integer.parseInt(mensagem.substring(index1,index2));
@@ -120,5 +121,35 @@ public class AgenteEstacao extends Agent {
             }
         }
     }
+
+    private class ReceivePedidoOcupacao extends CyclicBehaviour{
+
+        public void action() {
+
+            ACLMessage msg = receive();
+
+            if (msg != null) {
+                if (msg.getPerformative() == ACLMessage.REQUEST && msg.getContent().equals("Ocupacao")){
+                    ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
+                    resposta.setContent(toStringOcupacao());
+                    resposta.addReceiver(msg.getSender());
+                    myAgent.send(resposta);
+                }
+            }
+        }
+
+    }
+
+    public String toStringOcupacao() {
+        StringBuilder str = new StringBuilder();
+
+        str.append("OCUPAÇÃO DAS ESTAÇÕES\n");
+
+        for (Map.Entry<String, Double> mapEntry : this.ocupacaoEstacao.entrySet()) {
+            str.append(mapEntry.getKey()+"  Ocupação: "+ mapEntry.getValue() +" \n");
+        }
+        return str.toString();
+    }
+
 
 }

@@ -78,11 +78,11 @@ public class AgenteUtilizador extends Agent {
         distanciaPercorrida = 0;
         aceitouIncentivo = 0;
 
-        //System.out.println("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
-        //System.out.println("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
-        //System.out.println("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
+        System.out.print("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
+        System.out.print("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
+        System.out.print("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
 
-        this.addBehaviour(new Movimento(this,500));
+        this.addBehaviour(new Movimento(this,1000));
     }
 
     protected void takeDown(){
