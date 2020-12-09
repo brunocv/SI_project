@@ -35,7 +35,6 @@ public class AgenteEstacao extends Agent {
         utilizadorNaArea = new HashMap<>();
 
         this.addBehaviour(new ReceiveMessages());
-        this.addBehaviour(new ReceivePedidoOcupacao());
     }
 
     protected void takeDown(){
@@ -74,7 +73,13 @@ public class AgenteEstacao extends Agent {
 
                         myAgent.send(resposta);
                     }
+                    else if(msg.getContent().equals("Ocupacao")){
+                        ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
+                        resposta.setContent(toStringOcupacao());
+                        resposta.addReceiver(msg.getSender());
+                        myAgent.send(resposta);
 
+                    }
                 }else if(msg.getPerformative() == ACLMessage.INFORM){
 
                     if(msg.getContent().equals("Cheguei ao destino.")){
@@ -122,23 +127,6 @@ public class AgenteEstacao extends Agent {
         }
     }
 
-    private class ReceivePedidoOcupacao extends CyclicBehaviour{
-
-        public void action() {
-
-            ACLMessage msg = receive();
-
-            if (msg != null) {
-                if (msg.getPerformative() == ACLMessage.REQUEST && msg.getContent().equals("Ocupacao")){
-                    ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
-                    resposta.setContent(toStringOcupacao());
-                    resposta.addReceiver(msg.getSender());
-                    myAgent.send(resposta);
-                }
-            }
-        }
-
-    }
 
     public String toStringOcupacao() {
         StringBuilder str = new StringBuilder();
