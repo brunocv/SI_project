@@ -40,7 +40,7 @@ public class AgenteInterface extends Agent {
         this.addBehaviour(new PedirOcupacao(this,5000));
         this.addBehaviour(new ReceiveInfo());
         this.addBehaviour(new drawOcupacao(this,6000));
-        //this.addBehaviour(new PedirUtilizadores(this,3000));
+        this.addBehaviour(new PedirUtilizadores(this,4000));
         startUI();
     }
 
@@ -65,7 +65,8 @@ public class AgenteInterface extends Agent {
                     ocupacaoEstacao = msg.getContent();
                 }
                 else{
-                    
+                    System.out.println("NOVO");
+                    System.out.print(msg.getContent());
                 }
             }
         }

@@ -81,6 +81,7 @@ public class AgenteEstacao extends Agent {
 
                     }
                     else if(msg.getContent().equals("Utilizadores")){
+
                         ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
 
                         StringBuilder str = new StringBuilder();
