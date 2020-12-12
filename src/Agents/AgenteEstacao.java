@@ -87,7 +87,7 @@ public class AgenteEstacao extends Agent {
                         StringBuilder str = new StringBuilder();
 
                         for (Map.Entry<String, Coordenadas> mapEntry : utilizadorNaArea.entrySet()) {
-                            str.append(mapEntry.getValue().getCoordX() +" " + mapEntry.getValue().getCoordY()+" \n");
+                            str.append(mapEntry.getValue().getCoordX() +" " + mapEntry.getValue().getCoordY()+"\n");
                         }
 
                         resposta.setContent(str.toString());

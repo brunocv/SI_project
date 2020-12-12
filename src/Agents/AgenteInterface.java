@@ -3,6 +3,7 @@ package Agents;
 import Behaviours.PedirOcupacao;
 import Behaviours.PedirUtilizadores;
 import Interface.UI;
+import Util.Coordenadas;
 import Util.Mapa;
 import jade.core.AID;
 import jade.core.Agent;
@@ -14,7 +15,9 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AgenteInterface extends Agent {
@@ -22,6 +25,7 @@ public class AgenteInterface extends Agent {
     private Mapa mapa;
     private UI ui;
     private String ocupacaoEstacao;
+    private List<Coordenadas> posicaoUtilizadores;
 
     protected void setup(){
         super.setup();
@@ -65,8 +69,12 @@ public class AgenteInterface extends Agent {
                     ocupacaoEstacao = msg.getContent();
                 }
                 else{
-                    System.out.println("NOVO");
-                    System.out.print(msg.getContent());
+                    if(msg.getContent()!=null){
+                        String str = msg.getContent();
+                        str = str.replaceAll("[\n]+", " ");
+                       // asList(str.trim().split(" "));
+                    }
+                    //System.out.print(msg.getContent());
                 }
             }
         }
