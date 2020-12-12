@@ -30,7 +30,7 @@ public class Mapa implements Serializable {
         }
         else{
             this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(30);
-            this.tamanho = 40;
+            this.tamanho = 20;
             this.estacoes = 2;
             this.escolhido = false;
 
@@ -53,7 +53,7 @@ public class Mapa implements Serializable {
         }
         else{
             this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(30);
-            this.tamanho = 40;
+            this.tamanho = 20;
             this.estacoes = 2;
             this.escolhido = false;
 
@@ -62,7 +62,7 @@ public class Mapa implements Serializable {
 
     public Mapa() {
         this.posicaoEstacoes = new HashMap<>(30);
-        this.tamanho = 40;
+        this.tamanho = 20;
         this.estacoes = 2;
         this.escolhido = false;
     }
