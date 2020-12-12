@@ -131,11 +131,18 @@ public class AgenteEstacao extends Agent {
     public String toStringOcupacao() {
         StringBuilder str = new StringBuilder();
 
-        str.append("OCUPAÇÃO DAS ESTAÇÕES\n");
-
-        for (Map.Entry<String, Double> mapEntry : this.ocupacaoEstacao.entrySet()) {
-            str.append(mapEntry.getKey()+"  Ocupação: "+ mapEntry.getValue() +" \n");
+        str.append("<html>OCUPAÇÃO DAS ESTAÇÕES");
+        str.append("<br/>");
+        for(int i = 1; i <26 ; i++){
+            String nome = "Estacao "+i;
+            if(this.ocupacaoEstacao.get(nome) != null){
+                str.append("<br/>" + nome+"  Ocupação: "+ this.ocupacaoEstacao.get(nome));
+            }
+            else{
+                break;
+            }
         }
+        str.append("</html>");
         return str.toString();
     }
 

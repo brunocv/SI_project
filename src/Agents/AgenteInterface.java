@@ -3,8 +3,14 @@ package Agents;
 import Behaviours.PedirOcupacao;
 import Interface.UI;
 import Util.Mapa;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
 import java.util.HashMap;
@@ -32,6 +38,7 @@ public class AgenteInterface extends Agent {
 
         this.addBehaviour(new PedirOcupacao(this,5000));
         this.addBehaviour(new ReceiveOcupacao());
+        this.addBehaviour(new drawOcupacao(this,6000));
         startUI();
     }
 
@@ -54,9 +61,18 @@ public class AgenteInterface extends Agent {
             if (msg != null) {
                 if (msg.getPerformative() == ACLMessage.INFORM) {
                     ocupacaoEstacao = msg.getContent();
-                    System.out.println(ocupacaoEstacao);
                 }
             }
+        }
+    }
+    private class drawOcupacao extends TickerBehaviour {
+
+        public drawOcupacao(Agent a, long timeout){
+            super(a,timeout);
+        }
+
+        protected void onTick(){
+            ui.drawOcupacaoEstacao(ocupacaoEstacao);
         }
     }
 }
