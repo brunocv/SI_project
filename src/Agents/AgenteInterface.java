@@ -1,6 +1,7 @@
 package Agents;
 
 import Behaviours.PedirOcupacao;
+import Behaviours.PedirUtilizadores;
 import Interface.UI;
 import Util.Mapa;
 import jade.core.AID;
@@ -37,8 +38,9 @@ public class AgenteInterface extends Agent {
         }
 
         this.addBehaviour(new PedirOcupacao(this,5000));
-        this.addBehaviour(new ReceiveOcupacao());
+        this.addBehaviour(new ReceiveInfo());
         this.addBehaviour(new drawOcupacao(this,6000));
+        //this.addBehaviour(new PedirUtilizadores(this,3000));
         startUI();
     }
 
@@ -53,14 +55,17 @@ public class AgenteInterface extends Agent {
         this.ui.getJFrame().setVisible(true);
     }
 
-    private class ReceiveOcupacao extends CyclicBehaviour {
+    private class ReceiveInfo extends CyclicBehaviour {
 
         public void action() {
 
             ACLMessage msg = receive();
-            if (msg != null) {
-                if (msg.getPerformative() == ACLMessage.INFORM) {
+            if (msg != null && msg.getPerformative() == ACLMessage.INFORM) {
+                if(msg.getContent().contains("Estacao")){
                     ocupacaoEstacao = msg.getContent();
+                }
+                else{
+                    
                 }
             }
         }

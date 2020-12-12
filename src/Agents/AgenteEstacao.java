@@ -80,6 +80,19 @@ public class AgenteEstacao extends Agent {
                         myAgent.send(resposta);
 
                     }
+                    else if(msg.getContent().equals("Utilizadores")){
+                        ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
+
+                        StringBuilder str = new StringBuilder();
+
+                        for (Map.Entry<String, Coordenadas> mapEntry : utilizadorNaArea.entrySet()) {
+                            str.append(mapEntry.getValue().getCoordX() +" " + mapEntry.getValue().getCoordY()+" \n");
+                        }
+
+                        resposta.setContent(str.toString());
+                        resposta.addReceiver(msg.getSender());
+                        myAgent.send(resposta);
+                    }
                 }else if(msg.getPerformative() == ACLMessage.INFORM){
 
                     if(msg.getContent().equals("Cheguei ao destino.")){
