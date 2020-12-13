@@ -47,7 +47,6 @@ public class AgenteInterface extends Agent {
         this.addBehaviour(new ReceiveInfo());
         this.addBehaviour(new drawOcupacao(this,4500));
         this.addBehaviour(new PedirUtilizadores(this,3000));
-        this.addBehaviour(new drawUtilizadores(this,4000));
         startUI();
     }
 
@@ -65,6 +64,12 @@ public class AgenteInterface extends Agent {
     private class ReceiveInfo extends CyclicBehaviour {
 
         public void action() {
+
+            if(contagem >= estacoes){
+                ui.drawUtilizadores(posicaoUtilizadores);
+                posicaoUtilizadores.clear();
+                contagem = 0;
+            }
 
             ACLMessage msg = receive();
             if (msg != null && msg.getPerformative() == ACLMessage.INFORM) {
@@ -102,18 +107,4 @@ public class AgenteInterface extends Agent {
         }
     }
 
-    private class drawUtilizadores extends TickerBehaviour {
-
-        public drawUtilizadores(Agent a, long timeout){
-            super(a,timeout);
-        }
-
-        protected void onTick(){
-            if(contagem >= estacoes){
-                ui.drawUtilizadores(posicaoUtilizadores);
-                posicaoUtilizadores.clear();
-                contagem = 0;
-            }
-        }
-    }
 }

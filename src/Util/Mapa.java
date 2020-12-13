@@ -155,7 +155,6 @@ public class Mapa implements Serializable {
         if(this.estacoes == 3 && (this.tamanho != 120)) espaco++;
 
         if(iteracao >= this.estacoes) return;
-        System.out.println("Está a dar");
 
         for(int e = 0; e < this.estacoes ; e++){
             for(int i = e * espaco; i < espaco * (e +1) && i < this.tamanho; i ++){

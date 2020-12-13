@@ -100,6 +100,11 @@ public class AgenteEstacao extends Agent {
                 }else if(msg.getPerformative() == ACLMessage.INFORM){
 
                     if(msg.getContent().equals("Cheguei ao destino.")){
+                        String numUtilizador = msg.getSender().getName();
+                        int ind = numUtilizador.indexOf("@");
+                        String nomeUtilizador = numUtilizador.substring(0,ind);
+                        utilizadorNaArea.remove(nomeUtilizador);
+
                         bicicletas++;
                         String fullName = myAgent.getAID().getName();
                         int index = fullName.indexOf("@"); // Vai procurar o indice da primeira occurencia de "@"
