@@ -23,6 +23,8 @@ public class AgenteInterface extends Agent {
     private UI ui;
     private String ocupacaoEstacao;
     private List<Coordenadas> posicaoUtilizadores;
+    private int estacoes;
+    private int contagem;
 
     protected void setup(){
         super.setup();
@@ -30,7 +32,9 @@ public class AgenteInterface extends Agent {
 
         Object[] args = this.getArguments();
         this.mapa = (Mapa) args[0];
-        posicaoUtilizadores = new ArrayList<>();
+        this.posicaoUtilizadores = new ArrayList<>();
+        this.estacoes = mapa.getEstacoes() * mapa.getEstacoes();
+        this.contagem = 0;
 
         try{
             Thread.sleep(2000);
@@ -42,8 +46,8 @@ public class AgenteInterface extends Agent {
         this.addBehaviour(new PedirOcupacao(this,4000));
         this.addBehaviour(new ReceiveInfo());
         this.addBehaviour(new drawOcupacao(this,4500));
-        this.addBehaviour(new PedirUtilizadores(this,4000));
-        //this.addBehaviour(new drawUtilizadores(this,4500));
+        this.addBehaviour(new PedirUtilizadores(this,3000));
+        this.addBehaviour(new drawUtilizadores(this,4000));
         startUI();
     }
 
@@ -69,6 +73,7 @@ public class AgenteInterface extends Agent {
                 }
                 else{
                     if(msg.getContent()!=null){
+                        contagem++;
                         String str = msg.getContent();
                         str = str.replaceAll("[\n]+", " ");
                         String posicoes[] = str.split(" ");
@@ -81,7 +86,6 @@ public class AgenteInterface extends Agent {
                             }
                         }
                     }
-
                 }
             }
         }
@@ -105,8 +109,11 @@ public class AgenteInterface extends Agent {
         }
 
         protected void onTick(){
-            ui.drawUtilizadores(posicaoUtilizadores);
-            posicaoUtilizadores.clear();
+            if(contagem >= estacoes){
+                ui.drawUtilizadores(posicaoUtilizadores);
+                posicaoUtilizadores.clear();
+                contagem = 0;
+            }
         }
     }
 }

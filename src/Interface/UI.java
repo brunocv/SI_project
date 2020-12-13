@@ -59,6 +59,7 @@ public class UI {
 
     public void drawUtilizadores(List<Coordenadas> utilizadores){
         mapaui.drawUtilizadores(utilizadores);
-        panel_2.revalidate();
+        mapaui.draw(1,mapa.getPosicaoEstacoes());
+        panel_2.repaint();
     }
 }
