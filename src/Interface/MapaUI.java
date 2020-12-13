@@ -6,6 +6,7 @@ import Util.Mapa;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapaUI {
@@ -45,6 +46,16 @@ public class MapaUI {
             c.image();
         }
 
+    }
+
+    public void drawUtilizadores(List<Coordenadas> utilizadores){
+
+        for(Coordenadas c : utilizadores){
+            Cell ce = this.cell[c.getCoordY()][c.getCoordY()];
+            ce.setTipo(2);
+            ce.image();
+
+        }
     }
 
     public JPanel getPanel(){

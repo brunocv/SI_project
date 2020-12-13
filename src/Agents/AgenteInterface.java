@@ -15,10 +15,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AgenteInterface extends Agent {
 
@@ -33,6 +30,7 @@ public class AgenteInterface extends Agent {
 
         Object[] args = this.getArguments();
         this.mapa = (Mapa) args[0];
+        posicaoUtilizadores = new ArrayList<>();
 
         try{
             Thread.sleep(2000);
@@ -45,6 +43,7 @@ public class AgenteInterface extends Agent {
         this.addBehaviour(new ReceiveInfo());
         this.addBehaviour(new drawOcupacao(this,6000));
         this.addBehaviour(new PedirUtilizadores(this,4000));
+        this.addBehaviour(new drawUtilizadores(this,4500));
         startUI();
     }
 
@@ -72,13 +71,22 @@ public class AgenteInterface extends Agent {
                     if(msg.getContent()!=null){
                         String str = msg.getContent();
                         str = str.replaceAll("[\n]+", " ");
-                       // asList(str.trim().split(" "));
+                        String posicoes[] = str.split(" ");
+
+                        for(int i = 0; i< posicoes.length && posicoes.length > 1; i+=2){
+                            if(posicoes == null) break;
+                            if(posicoes[i] != null && posicoes[i]!="" && posicoes[i]!=" " && posicoes[i+1] != null && posicoes[i+1] != "" && posicoes[i+1]!=" "){
+                                Coordenadas c = new Coordenadas(Integer.parseInt(posicoes[i]),Integer.parseInt(posicoes[i+1]));
+                                posicaoUtilizadores.add(c);
+                            }
+                        }
                     }
-                    //System.out.print(msg.getContent());
+
                 }
             }
         }
     }
+
     private class drawOcupacao extends TickerBehaviour {
 
         public drawOcupacao(Agent a, long timeout){
@@ -87,6 +95,18 @@ public class AgenteInterface extends Agent {
 
         protected void onTick(){
             ui.drawOcupacaoEstacao(ocupacaoEstacao);
+        }
+    }
+
+    private class drawUtilizadores extends TickerBehaviour {
+
+        public drawUtilizadores(Agent a, long timeout){
+            super(a,timeout);
+        }
+
+        protected void onTick(){
+            ui.drawUtilizadores(posicaoUtilizadores);
+            posicaoUtilizadores.clear();
         }
     }
 }

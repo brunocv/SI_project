@@ -1,16 +1,19 @@
 package Interface;
 
 import Agents.AgenteInterface;
+import Util.Coordenadas;
 import Util.Mapa;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class UI {
 
     private Mapa mapa;
     private JFrame mainFrame;
     private JPanel panel_1;
+    private JPanel panel_2;
     private AgenteInterface agente;
     private MapaUI mapaui;
     private JLabel texto;
@@ -23,7 +26,8 @@ public class UI {
         this.panel_1= new JPanel();
         panel_1.setBounds(1150, 20, 400, 450);
         panel_1.setBackground(Color.white);
-
+        this.panel_2 = new JPanel();
+        this.panel_2 = mapaui.getPanel();
         frameInitialize();
 
     }
@@ -40,8 +44,8 @@ public class UI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(1600,1100);
         mainFrame.setLocationRelativeTo(null);
-        mainFrame.getContentPane().add(mapaui.getPanel());
         mainFrame.add(panel_1);
+        mainFrame.add(panel_2);
     }
 
     public void drawOcupacaoEstacao(String ocupacoes){
@@ -50,5 +54,10 @@ public class UI {
         panel_1.add(texto);
         panel_1.revalidate();
 
+    }
+
+    public void drawUtilizadores(List<Coordenadas> utilizadores){
+        mapaui.drawUtilizadores(utilizadores);
+        panel_2.revalidate();
     }
 }

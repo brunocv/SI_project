@@ -43,7 +43,9 @@ public class Cell {
 
     public void image(){
         String s = "Images/floor.png";
+        if(this.tipo == 0) s = "Images/floor.png";
         if(this.tipo == 1) s = "Images/station.png";
+        if(this.tipo == 2) s = "Images/bycicle.png";
 
         BufferedImage i = null;
         try {
@@ -57,7 +59,6 @@ public class Cell {
         Image dimg = i.getScaledInstance(960/this.tamanho, 960/this.tamanho, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(dimg);
 
-        //ImageIcon imageIcon = new ImageIcon(new ImageIcon("Images/floor.png").getImage().getScaledInstance(960/this.tamanho, 960/this.tamanho, Image.SCALE_SMOOTH));
         this.label.setIcon(imageIcon);
     }
 
