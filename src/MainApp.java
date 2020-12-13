@@ -7,6 +7,7 @@ import Util.Mapa;
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MainApp {
 
@@ -21,7 +22,7 @@ public class MainApp {
             O primeiro ciclo for serve para não o estar a fazer todas as vezes que se cria uma estação nova...
          */
         int numeroDeEstacoes = (int) Math.pow(mapa.getEstacoes(),2);
-        Map<String,Double> ocupacaoEstacoes = new HashMap<>();
+        ConcurrentHashMap<String,Double> ocupacaoEstacoes = new ConcurrentHashMap<>(30);
         for(int i=0;i<numeroDeEstacoes;i++){
             String nome = "Estacao "+(i+1);
             ocupacaoEstacoes.put(nome,(double)0.50); // No inicio do sistema, todas as estações tem 50% das sua capacidade maxima

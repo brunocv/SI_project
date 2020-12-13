@@ -39,11 +39,11 @@ public class AgenteInterface extends Agent {
             e.printStackTrace();
         }
 
-        this.addBehaviour(new PedirOcupacao(this,5000));
+        this.addBehaviour(new PedirOcupacao(this,4000));
         this.addBehaviour(new ReceiveInfo());
-        this.addBehaviour(new drawOcupacao(this,6000));
+        this.addBehaviour(new drawOcupacao(this,4500));
         this.addBehaviour(new PedirUtilizadores(this,4000));
-        this.addBehaviour(new drawUtilizadores(this,4500));
+        //this.addBehaviour(new drawUtilizadores(this,4500));
         startUI();
     }
 

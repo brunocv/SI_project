@@ -44,8 +44,9 @@ public class UI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(1600,1100);
         mainFrame.setLocationRelativeTo(null);
-        mainFrame.add(panel_1);
         mainFrame.add(panel_2);
+        mainFrame.add(panel_1);
+
     }
 
     public void drawOcupacaoEstacao(String ocupacoes){

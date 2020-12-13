@@ -9,6 +9,7 @@ import jade.lang.acl.ACLMessage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AgenteEstacao extends Agent {
 
@@ -17,7 +18,7 @@ public class AgenteEstacao extends Agent {
     private int bicicletas;
     private List<Coordenadas> areaDeControlo;
     private Map<String,Coordenadas> utilizadorNaArea;
-    private Map<String,Double> ocupacaoEstacao;
+    private ConcurrentHashMap<String,Double> ocupacaoEstacao;
 
     protected void setup(){
         super.setup();
@@ -27,7 +28,7 @@ public class AgenteEstacao extends Agent {
         Object[] args = getArguments();
         posicaoEstacao = (Coordenadas) args[0];
         areaDeControlo = (List<Coordenadas>) args[1];
-        ocupacaoEstacao = (Map<String, Double>) args[2];
+        ocupacaoEstacao = (ConcurrentHashMap<String, Double>) args[2];
         capacidadeEstacao = 20;
         bicicletas = 10; // Random starting values, depois talvez seja melhor alterado dependendo do numero
                         // de estações que se vai ter. devido ao mapa ser dinamico.
@@ -64,7 +65,9 @@ public class AgenteEstacao extends Agent {
                                                                //pois o Nome dos agentes é Estacao X@etc.etc.etc
                             String nome = fullName.substring(0,index);
 
-                            ocupacaoEstacao.put(nome,(double)bicicletas/capacidadeEstacao);
+                            synchronized (this){
+                                ocupacaoEstacao.put(nome,(double)bicicletas/capacidadeEstacao);
+                            }
                         }
 
                         else{ resposta.setContent("0"); }
@@ -102,8 +105,9 @@ public class AgenteEstacao extends Agent {
                         int index = fullName.indexOf("@"); // Vai procurar o indice da primeira occurencia de "@"
                                                            //pois o Nome dos agentes é Estacao X@etc.etc.etc
                         String nome = fullName.substring(0,index);
-
-                        ocupacaoEstacao.put(nome,(double)bicicletas/capacidadeEstacao);
+                        synchronized (this){
+                            ocupacaoEstacao.put(nome,(double)bicicletas/capacidadeEstacao);
+                        }
                     }
 
                     //Exemplo Mensagem::
@@ -143,20 +147,27 @@ public class AgenteEstacao extends Agent {
 
 
     public String toStringOcupacao() {
+
         StringBuilder str = new StringBuilder();
 
         str.append("<html>OCUPAÇÃO DAS ESTAÇÕES");
         str.append("<br/>");
-        for(int i = 1; i <26 ; i++){
-            String nome = "Estacao "+i;
-            if(this.ocupacaoEstacao.get(nome) != null){
-                str.append("<br/>" + nome+"  Ocupação: "+ this.ocupacaoEstacao.get(nome));
-            }
-            else{
-                break;
+
+        synchronized (this){
+
+            for(int i = 1; i <26 ; i++){
+                String nome = "Estacao "+i;
+                if(this.ocupacaoEstacao.get(nome) != null){
+                    str.append("<br/>" + nome+"  Ocupação: "+ this.ocupacaoEstacao.get(nome));
+                }
+                else{
+                    break;
+                }
             }
         }
+
         str.append("</html>");
+
         return str.toString();
     }
 

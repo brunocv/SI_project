@@ -11,6 +11,7 @@ import jade.wrapper.StaleProxyException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MainContainer {
 
@@ -96,7 +97,7 @@ public class MainContainer {
 	}
 
 
-	public void startEstacao(int numeroEstacao, Mapa mapa,Map<String,Double> ocupEst) {
+	public void startEstacao(int numeroEstacao, Mapa mapa, ConcurrentHashMap<String,Double> ocupEst) {
 		try {
 			String nome = "Estacao "+numeroEstacao;
 

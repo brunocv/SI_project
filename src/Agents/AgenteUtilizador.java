@@ -82,7 +82,7 @@ public class AgenteUtilizador extends Agent {
         System.out.print("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
         System.out.print("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
 
-        this.addBehaviour(new Movimento(this,4000));
+        this.addBehaviour(new Movimento(this,3000));
     }
 
     protected void takeDown(){
