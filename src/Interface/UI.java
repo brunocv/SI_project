@@ -6,14 +6,19 @@ import Util.Mapa;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class UI {
 
     private Mapa mapa;
     private JFrame mainFrame;
-    private JPanel panel_1;
-    private JPanel panel_2;
+    private JFrame graphics;
+    private JButton button;
+    private JPanel panel_1; //mapa
+    private JPanel panel_2; //ocupacao
+    private JPanel panel_3; //graphic 1
     private AgenteInterface agente;
     private MapaUI mapaui;
     private JLabel texto;
@@ -28,8 +33,30 @@ public class UI {
         panel_1.setBackground(Color.white);
         this.panel_2 = new JPanel();
         this.panel_2 = mapaui.getPanel();
+        this.button = new JButton("Graphics");
+        this.button.setBounds(1250,650,150,80);
+
+        initiGraphics();
+
+        this.button.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+
+                graphics.setVisible(true);
+
+            }
+        });
+
         frameInitialize();
 
+    }
+
+    public void initiGraphics(){
+        graphics = new JFrame();
+        graphics.setTitle("Gráficos");
+        graphics.getContentPane().setLayout(null);
+        graphics.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        graphics.setSize(900,900);
+        graphics.setLocationRelativeTo(null);
     }
 
     public JFrame getJFrame(){
@@ -46,6 +73,7 @@ public class UI {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.add(panel_2);
         mainFrame.add(panel_1);
+        mainFrame.add(button);
 
     }
 
