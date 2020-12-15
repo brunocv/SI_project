@@ -21,6 +21,7 @@ public class AgenteEstacao extends Agent {
     private List<Coordenadas> areaDeControlo;
     private Map<String,Coordenadas> utilizadorNaArea;
     private ConcurrentHashMap<String,Double> ocupacaoEstacao;
+    private int falhas;
 
     protected void setup(){
         super.setup();
@@ -34,7 +35,7 @@ public class AgenteEstacao extends Agent {
         capacidadeEstacao = 14;
         bicicletas = 7; // Random starting values, depois talvez seja melhor alterado dependendo do numero
                         // de estações que se vai ter. devido ao mapa ser dinamico.
-
+        falhas = 0;
         utilizadorNaArea = new HashMap<>();
 
         this.addBehaviour(new ReceiveMessages());
@@ -58,7 +59,7 @@ public class AgenteEstacao extends Agent {
                     if(msg.getContent().equals("Request para começar.")){ //Vai responder se é permitido começar o deslocamento aqui
 
                         ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
-
+                        if(bicicletas==0) falhas++;
                         if(bicicletas > 0){
                             resposta.setContent("1");
                             bicicletas--;
@@ -84,6 +85,18 @@ public class AgenteEstacao extends Agent {
                         resposta.addReceiver(msg.getSender());
                         myAgent.send(resposta);
 
+                    }
+                    else if(msg.getContent().equals("Bicicletas")){
+                        ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
+                        resposta.setContent("Bic "+ bicicletas);
+                        resposta.addReceiver(msg.getSender());
+                        myAgent.send(resposta);
+                    }
+                    else if(msg.getContent().equals("Falhas")){
+                        ACLMessage resposta = new ACLMessage(ACLMessage.INFORM);
+                        resposta.setContent("Fail "+ falhas);
+                        resposta.addReceiver(msg.getSender());
+                        myAgent.send(resposta);
                     }
                     else if(msg.getContent().equals("Utilizadores")){
 

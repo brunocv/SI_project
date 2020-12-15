@@ -3,6 +3,15 @@ package Interface;
 import Agents.AgenteInterface;
 import Util.Coordenadas;
 import Util.Mapa;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.statistics.HistogramType;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +23,14 @@ public class UI {
 
     private Mapa mapa;
     private JFrame mainFrame;
-    private JFrame graphics;
-    private JButton button;
+    private JFrame histogramaBicicletas;
+    private JFrame graficoFail;
+    private JButton buttonBicicletas;
+    private JButton buttonVazio;
     private JPanel panel_1; //mapa
     private JPanel panel_2; //ocupacao
-    private JPanel panel_3; //graphic 1
+    private JPanel graficoBicicletas; //histograma que diz quantas bicicletas cada estacao tem
+    private JPanel graficoFalhas;
     private AgenteInterface agente;
     private MapaUI mapaui;
     private JLabel texto;
@@ -33,15 +45,36 @@ public class UI {
         panel_1.setBackground(Color.white);
         this.panel_2 = new JPanel();
         this.panel_2 = mapaui.getPanel();
-        this.button = new JButton("Graphics");
-        this.button.setBounds(1250,650,150,80);
+
+        this.buttonBicicletas = new JButton("Gráfico Barras Bicicletas");
+        this.buttonBicicletas.setBounds(1250,550,250,100);
+
+        this.buttonVazio = new JButton("Gráfico Barras Falha");
+        this.buttonVazio.setBounds(1250,700,250,100);
+
+        this.graficoBicicletas = new JPanel();
+        this.graficoBicicletas.setBounds(150, 150, 500, 500);
+        this.graficoBicicletas.setLayout(new java.awt.BorderLayout());
+
+        this.graficoFalhas = new JPanel();
+        this.graficoFalhas.setBounds(150, 150, 500, 500);
+        this.graficoFalhas.setLayout(new java.awt.BorderLayout());
 
         initiGraphics();
+        initiGraphics2();
 
-        this.button.addActionListener(new ActionListener(){
+        this.buttonBicicletas.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
 
-                graphics.setVisible(true);
+                histogramaBicicletas.setVisible(true);
+
+            }
+        });
+
+        this.buttonVazio.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+
+                graficoFail.setVisible(true);
 
             }
         });
@@ -51,12 +84,23 @@ public class UI {
     }
 
     public void initiGraphics(){
-        graphics = new JFrame();
-        graphics.setTitle("Gráficos");
-        graphics.getContentPane().setLayout(null);
-        graphics.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        graphics.setSize(900,900);
-        graphics.setLocationRelativeTo(null);
+        histogramaBicicletas = new JFrame();
+        histogramaBicicletas.setTitle("Gráfico de barras de disposição de bicicletas");
+        histogramaBicicletas.getContentPane().setLayout(null);
+        histogramaBicicletas.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        histogramaBicicletas.setSize(900,900);
+        histogramaBicicletas.setLocationRelativeTo(null);
+
+    }
+
+    public void initiGraphics2(){
+        graficoFail = new JFrame();
+        graficoFail.setTitle("Gráfico de barras de vezes que estação teve 0 bicicletas");
+        graficoFail.getContentPane().setLayout(null);
+        graficoFail.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        graficoFail.setSize(900,900);
+        graficoFail.setLocationRelativeTo(null);
+
     }
 
     public JFrame getJFrame(){
@@ -73,7 +117,8 @@ public class UI {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.add(panel_2);
         mainFrame.add(panel_1);
-        mainFrame.add(button);
+        mainFrame.add(buttonBicicletas);
+        mainFrame.add(buttonVazio);
 
     }
 
@@ -89,5 +134,50 @@ public class UI {
         mapaui.drawUtilizadores(utilizadores);
         mapaui.draw(1,mapa.getPosicaoEstacoes());
         panel_2.repaint();
+    }
+
+
+    public void drawBicicletas(int bicicletas[]){
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+
+        for(int i = 0 ; i < (mapa.getEstacoes() * mapa.getEstacoes()) ; i++) {
+            dataset.addValue(bicicletas[i],"Estacao",""+(i+1));
+        }
+        JFreeChart chart=ChartFactory.createBarChart(
+                "Disposição de Bicicletas", //Chart Title
+                "Estação", // Category axis
+                "Bicicletas", // Value axis
+                dataset,
+                PlotOrientation.VERTICAL,
+                false,false,false
+        );
+
+        ChartPanel CP = new ChartPanel(chart);
+        graficoBicicletas.add(CP,BorderLayout.CENTER);
+        histogramaBicicletas.add(graficoBicicletas);
+        graficoBicicletas.validate();
+        histogramaBicicletas.validate();
+    }
+
+    public void drawFalhas(int falhas[]){
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+
+        for(int i = 0 ; i < (mapa.getEstacoes() * mapa.getEstacoes()) ; i++) {
+            dataset.addValue(falhas[i],"Estacao",""+(i+1));
+        }
+        JFreeChart chart=ChartFactory.createBarChart(
+                "Falta de bicicletas", //Chart Title
+                "Estação", // Category axis
+                "Vezes", // Value axis
+                dataset,
+                PlotOrientation.VERTICAL,
+                false,false,false
+        );
+
+        ChartPanel CP = new ChartPanel(chart);
+        graficoFalhas.add(CP,BorderLayout.CENTER);
+        graficoFail.add(graficoFalhas);
+        graficoFalhas.validate();
+        graficoFail.validate();
     }
 }
