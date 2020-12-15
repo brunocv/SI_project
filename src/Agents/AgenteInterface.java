@@ -46,7 +46,7 @@ public class AgenteInterface extends Agent {
         this.addBehaviour(new PedirOcupacao(this,4000));
         this.addBehaviour(new ReceiveInfo());
         this.addBehaviour(new drawOcupacao(this,4500));
-        this.addBehaviour(new PedirUtilizadores(this,3000));
+        this.addBehaviour(new PedirUtilizadores(this,1000));
         startUI();
     }
 

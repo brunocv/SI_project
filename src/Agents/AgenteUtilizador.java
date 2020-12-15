@@ -1,5 +1,6 @@
 package Agents;
 
+import Behaviours.tratamentoIncentivo;
 import JadePlatform.MainContainer;
 import Util.Coordenadas;
 import Util.Mapa;
@@ -78,17 +79,30 @@ public class AgenteUtilizador extends Agent {
         distanciaPercorrida = 0;
         aceitouIncentivo = 0;
 
-        System.out.print("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
-        System.out.print("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
-        System.out.print("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
+       // System.out.print("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
+        //System.out.print("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
+        //System.out.print("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
 
-        this.addBehaviour(new Movimento(this,2000));
+        this.addBehaviour(new Movimento(this,1000));
+        this.addBehaviour(new tratamentoIncentivo(this));
     }
 
     protected void takeDown(){
         super.takeDown();
         System.out.println("Agente utilizador terminou: " + getAID().getName());
 
+    }
+
+    public Coordenadas getPosicao(){return posicaoAtual.clone();}
+
+    public Coordenadas getDestino() { return estacaoDestino.clone(); }
+
+    public Coordenadas getOrigem() { return posicaoInicial.clone(); }
+
+    public void setNewDestino(String key, Coordenadas coordenadas) {
+        nomeEstacaoDestino = key;
+        estacaoDestino = coordenadas.clone();
+        aceitouIncentivo = 1;
     }
 
     private int perguntaBicicleta(int estacao_inicio) {
@@ -107,6 +121,10 @@ public class AgenteUtilizador extends Agent {
 
         return Integer.parseInt(confirmation.getContent());
     }
+
+    public void reduceValue() { aceitouIncentivo--; }
+
+    public int getIncentivo() { return aceitouIncentivo; }
 
     private class Movimento extends TickerBehaviour{
         public Movimento(Agent a,long timeout){super(a,timeout);}
@@ -210,7 +228,7 @@ public class AgenteUtilizador extends Agent {
                     DFAgentDescription dfd1 = resultados[i];
                     AID estacao = dfd1.getName();
 
-                    String mensagem = "Nova Posicao: &"+posAtual.getCoordX()+"$ %"+posAtual.getCoordY()+"! ?"+aceitouIncentivo+"<";
+                    String mensagem = "Nova Posicao: &" + posAtual.getCoordX() + "$ %" + posAtual.getCoordY() + "! ?" + dtPercorrida + "< -" + aceitouIncentivo + "@";
 
                     ACLMessage aEnviar = new ACLMessage(ACLMessage.INFORM);
                     aEnviar.addReceiver(estacao);

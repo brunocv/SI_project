@@ -6,7 +6,9 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,8 +31,8 @@ public class AgenteEstacao extends Agent {
         posicaoEstacao = (Coordenadas) args[0];
         areaDeControlo = (List<Coordenadas>) args[1];
         ocupacaoEstacao = (ConcurrentHashMap<String, Double>) args[2];
-        capacidadeEstacao = 20;
-        bicicletas = 10; // Random starting values, depois talvez seja melhor alterado dependendo do numero
+        capacidadeEstacao = 14;
+        bicicletas = 7; // Random starting values, depois talvez seja melhor alterado dependendo do numero
                         // de estações que se vai ter. devido ao mapa ser dinamico.
 
         utilizadorNaArea = new HashMap<>();
@@ -99,20 +101,20 @@ public class AgenteEstacao extends Agent {
                     }
                 }else if(msg.getPerformative() == ACLMessage.INFORM){
 
-                    if(msg.getContent().equals("Cheguei ao destino.")){
+                    if(msg.getContent().contains("Cheguei ao destino.")){
                         String numUtilizador = msg.getSender().getName();
                         int ind = numUtilizador.indexOf("@");
                         String nomeUtilizador = numUtilizador.substring(0,ind);
                         utilizadorNaArea.remove(nomeUtilizador);
 
                         bicicletas++;
+
                         String fullName = myAgent.getAID().getName();
                         int index = fullName.indexOf("@"); // Vai procurar o indice da primeira occurencia de "@"
                                                            //pois o Nome dos agentes é Estacao X@etc.etc.etc
                         String nome = fullName.substring(0,index);
-                        synchronized (this){
-                            ocupacaoEstacao.put(nome,(double)bicicletas/capacidadeEstacao);
-                        }
+
+                        ocupacaoEstacao.put(nome,(double)bicicletas/capacidadeEstacao);
                     }
 
                     //Exemplo Mensagem::
@@ -129,27 +131,60 @@ public class AgenteEstacao extends Agent {
                         int index4 = mensagem.indexOf("!");
                         int index5 = mensagem.indexOf("?")+1;
                         int index6 = mensagem.indexOf("<");
+                        int index7 = mensagem.indexOf("-") + 1;
+                        int index8 = mensagem.indexOf("@");
 
                         String endereco = myAgent.getAID().getName();
-                        int numero = Integer.parseInt(endereco.substring(endereco.indexOf(" ")+1,endereco.indexOf("@")));
+                        int numero = Integer.parseInt(endereco.substring(endereco.indexOf(" ") + 1, endereco.indexOf("@")));
                         // ^^^^ Numero da estação
 
-                        int novoX = Integer.parseInt(mensagem.substring(index1,index2));
-                        int novoY = Integer.parseInt(mensagem.substring(index3,index4));
+                        int novoX = Integer.parseInt(mensagem.substring(index1, index2));
+                        int novoY = Integer.parseInt(mensagem.substring(index3, index4));
 
-                        Coordenadas novaPosicao = new Coordenadas( novoX , novoY );
+                        Coordenadas novaPosicao = new Coordenadas(novoX, novoY);
 
-                        if(areaDeControlo.contains(novaPosicao)){//Para adicionar o utilizador no map depois de entrar na area
-                            utilizadorNaArea.put(nomeUtilizador,novaPosicao);
-                        }else if(utilizadorNaArea.containsKey(nomeUtilizador)){ //Para remover o utilizador do map depois de ele ter saido da area
+                        if (areaDeControlo.contains(novaPosicao)) {//Para adicionar o utilizador no map depois de entrar na area
+                            utilizadorNaArea.put(nomeUtilizador, novaPosicao);
+
+                            double percorrido = Double.parseDouble(mensagem.substring(index5, index6));
+                            int incentivo = Integer.parseInt(mensagem.substring(index7, index8));
+                            //System.out.println("User :" + msg.getSender().getName() + " Percorrido:" + percorrido );
+                            if (percorrido >= 0.75 && incentivo <= 0) {
+
+                                HashMap<String,Double> rec = getRecomendacoes();
+                                //^^Função q vai buscar as estações com menos de 20% de bicicletas restantes
+
+                                if(rec.size() > 0) {
+                                    try {
+                                        ACLMessage resposta = new ACLMessage(ACLMessage.PROPOSE);
+                                        resposta.addReceiver(msg.getSender());
+                                        resposta.setContent("Incentivo");
+                                        resposta.setContentObject(rec);
+                                        myAgent.send(resposta);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                        } else if (utilizadorNaArea.containsKey(nomeUtilizador)) { //Para remover o utilizador do map depois de ele ter saido da area
                             utilizadorNaArea.remove(nomeUtilizador);
                         }
                     }
+                } else if(msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
+                    double ocupacao = ocupacaoEstacao.get(msg.getContent());
+                    int biclas = (int)Math.floor(ocupacao*capacidadeEstacao);
+
+                    synchronized (this) {
+                        ocupacaoEstacao.put( msg.getContent() , (double) ((biclas + 1) / capacidadeEstacao) );
+                    }
+                   // System.out.println("He accepted");
+                } else if(msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
+                    //System.out.println("He did not accepted");
                 }
             }
         }
     }
-
 
     public String toStringOcupacao() {
 
@@ -176,5 +211,17 @@ public class AgenteEstacao extends Agent {
         return str.toString();
     }
 
+    public HashMap<String,Double> getRecomendacoes() {
+        HashMap<String,Double> toReturn = new HashMap<>();
 
+        Iterator it = ocupacaoEstacao.entrySet().iterator();
+        while (it.hasNext()) {
+
+            Map.Entry pair = (Map.Entry) it.next();
+            Double ocup = (Double) pair.getValue();
+            if (ocup <= 0.20)
+                toReturn.put((String) pair.getKey(),ocup);
+        }
+        return toReturn;
+    }
 }
