@@ -30,7 +30,7 @@ public class AgenteSystem extends Agent {
         System.out.println("Agente System entrou: " + getAID().getName());
 
         numero_utilizador = 1;
-        this.addBehaviour(new gerarUtilizadores(this,10000));
+        this.addBehaviour(new gerarUtilizadores(this,2000));
         this.addBehaviour(new receiveMessages());
         //doDelete();
     }
@@ -46,13 +46,11 @@ public class AgenteSystem extends Agent {
 
         protected void onTick(){
 
-            if(numero_utilizador <= 30) {
+            //if(numero_utilizador <= 60) {
                 String nome = "Utilizador" + numero_utilizador;
                 mc.startUtilizador(nome, mapa);
-                // System.out.println("Agente Utilizador "+numero_utilizador+" criado.");
-               // if (numero_utilizador == 20) doDelete();
                 numero_utilizador++;
-            }
+            //}
         }
     }
 
@@ -76,6 +74,7 @@ public class AgenteSystem extends Agent {
                     }
 
                     ACLMessage resposta = new ACLMessage();
+                    resposta.setConversationId(msg.getConversationId());
                     resposta.setContentObject(toReturn);
                     resposta.addReceiver(msg.getSender());
                     resposta.setPerformative(ACLMessage.INFORM);

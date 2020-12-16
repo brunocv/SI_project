@@ -97,14 +97,15 @@ public class MainContainer {
 	}
 
 
-	public void startEstacao(int numeroEstacao, Mapa mapa, ConcurrentHashMap<String,Double> ocupEst) {
+	public void startEstacao(int numeroEstacao, Mapa mapa, ConcurrentHashMap<String,Double> ocupEst,ConcurrentHashMap<String,Double> ocupFuturaEst) {
 		try {
 			String nome = "Estacao "+numeroEstacao;
 
-			Object[] pass = new Object[3]; // argumentos a passar para o agente a ser criado
+			Object[] pass = new Object[4]; // argumentos a passar para o agente a ser criado
 			pass[0] = mapa.getCoordenadasDaEstacao(numeroEstacao);
 			pass[1] = mapa.getZonasDaEstacao(numeroEstacao);
 			pass[2] = ocupEst;
+			pass[3] = ocupFuturaEst;
 
 			AgentController ac = container.createNewAgent(nome,"Agents.AgenteEstacao",pass);
 			ac.start();

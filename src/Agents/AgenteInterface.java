@@ -55,11 +55,11 @@ public class AgenteInterface extends Agent {
             e.printStackTrace();
         }
 
-        this.addBehaviour(new PedirOcupacao(this,4000));
+        this.addBehaviour(new PedirOcupacao(this,1500));
         this.addBehaviour(new ReceiveInfo());
-        this.addBehaviour(new drawOcupacao(this,4500));
+        this.addBehaviour(new drawOcupacao(this,2000));
         this.addBehaviour(new PedirUtilizadores(this,1000));
-        this.addBehaviour(new PedirBicicletas(this,5000));
+        this.addBehaviour(new PedirBicicletas(this,3000));
         this.addBehaviour(new PedirFalhas(this,6000));
         startUI();
     }

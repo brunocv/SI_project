@@ -1,7 +1,6 @@
 package Agents;
 
-import Behaviours.tratamentoIncentivo;
-import JadePlatform.MainContainer;
+import Behaviours.TratamentoIncentivo;
 import Util.Coordenadas;
 import Util.Mapa;
 import Util.Utilidade;
@@ -27,10 +26,12 @@ public class AgenteUtilizador extends Agent {
     private String nomeEstacaoDestino;
     private double distanciaPercorrida;
     private int aceitouIncentivo;
+    private int concluido;
+    private int greediness; //Para agentes comportarem-se de maneira diferente, varia entre -3 e 3
 
     protected void setup(){
         super.setup();
-        System.out.println("Agente utilizador entrou: " + getAID().getName());
+      //  System.out.println("Agente utilizador entrou: " + getAID().getName());
 
         Object[] args = getArguments();
         Mapa mapa = (Mapa)args[0];
@@ -78,18 +79,25 @@ public class AgenteUtilizador extends Agent {
         nomeEstacaoDestino = mapa.getNomeEstacao(estacaoDestino);
         distanciaPercorrida = 0;
         aceitouIncentivo = 0;
+        concluido = 0;
+        greediness = rand.nextInt(7) - 3;
 
-       // System.out.print("UTILIZADOR COMEÇA EM " + posicaoInicial.toString());
-        //System.out.print("UTILIZADOR TEM DE CHEGAR EM " + estacaoDestino.toString());
-        //System.out.print("UTILIZADOR QUERIA IR PARA " + posicaoDestino.toString());
+
+        //Vai avisar a estação que ela é o destino dele.
+        AID receiver = new AID();
+        receiver.setLocalName(nomeEstacaoDestino);
+        ACLMessage subscribe = new ACLMessage(ACLMessage.SUBSCRIBE);
+        subscribe.addReceiver(receiver);
+        this.send(subscribe);
+        //--------------------------
 
         this.addBehaviour(new Movimento(this,1000));
-        this.addBehaviour(new tratamentoIncentivo(this));
+        this.addBehaviour(new TratamentoIncentivo(this));
     }
 
     protected void takeDown(){
         super.takeDown();
-        System.out.println("Agente utilizador terminou: " + getAID().getName());
+      //  System.out.println("Agente utilizador terminou: " + getAID().getName());
 
     }
 
@@ -100,9 +108,26 @@ public class AgenteUtilizador extends Agent {
     public Coordenadas getOrigem() { return posicaoInicial.clone(); }
 
     public void setNewDestino(String key, Coordenadas coordenadas) {
+
+        String estacaoAntiga = nomeEstacaoDestino;
         nomeEstacaoDestino = key;
         estacaoDestino = coordenadas.clone();
         aceitouIncentivo = 1;
+
+        AID receiverOld = new AID();
+        AID receiverNew = new AID();
+
+        receiverOld.setLocalName(estacaoAntiga);
+        receiverNew.setLocalName(key);
+
+        ACLMessage sendOld = new ACLMessage(ACLMessage.CANCEL);
+        ACLMessage sendNew = new ACLMessage(ACLMessage.SUBSCRIBE);
+
+        sendOld.addReceiver(receiverOld);
+        sendNew.addReceiver(receiverNew);
+
+        this.send(sendOld);
+        this.send(sendNew);
     }
 
     private int perguntaBicicleta(int estacao_inicio) {
@@ -126,78 +151,100 @@ public class AgenteUtilizador extends Agent {
 
     public int getIncentivo() { return aceitouIncentivo; }
 
+    public int getGreed() { return greediness; }
+
     private class Movimento extends TickerBehaviour{
         public Movimento(Agent a,long timeout){super(a,timeout);}
 
         protected void onTick(){
-            int atualX = posicaoAtual.getCoordX();
-            int atualY = posicaoAtual.getCoordY();
-            int destinoX = estacaoDestino.getCoordX();
-            int destinoY = estacaoDestino.getCoordY();
+            if(concluido == 0) {
+                int atualX = posicaoAtual.getCoordX();
+                int atualY = posicaoAtual.getCoordY();
+                int destinoX = estacaoDestino.getCoordX();
+                int destinoY = estacaoDestino.getCoordY();
 
-            //System.out.println("UTILIZADOR POSICAO ATUAL " + posicaoAtual.toString());
-            Random rand = new Random(); // O random vai ser usado para poder haver um movimento mais variado
-                                        // isto é, para não estar sempre a se mover da mesma maneira.
+                //System.out.println("UTILIZADOR POSICAO ATUAL " + posicaoAtual.toString());
+                Random rand = new Random(); // O random vai ser usado para poder haver um movimento mais variado
+                // isto é, para não estar sempre a se mover da mesma maneira.
 
-            if( atualX < destinoX && atualY < destinoY){
-                Coordenadas novaPosicao = new Coordenadas(0,0);
-                int bool = rand.nextInt(2);
+                if (atualX < destinoX && atualY < destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(0, 0);
+                    int bool = rand.nextInt(2);
 
-                if(bool == 1){novaPosicao = new Coordenadas(atualX+1,atualY);}
-                else {novaPosicao = new Coordenadas(atualX,atualY+1);}
+                    if (bool == 1) {
+                        novaPosicao = new Coordenadas(atualX + 1, atualY);
+                    } else {
+                        novaPosicao = new Coordenadas(atualX, atualY + 1);
+                    }
 
-                posicaoAtual = new Coordenadas(novaPosicao);
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX < destinoX && atualY > destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(0, 0);
+                    int bool = rand.nextInt(2);
+
+                    if (bool == 1) {
+                        novaPosicao = new Coordenadas(atualX + 1, atualY);
+                    } else {
+                        novaPosicao = new Coordenadas(atualX, atualY - 1);
+                    }
+
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX < destinoX && atualY == destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(atualX + 1, atualY);
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX > destinoX && atualY < destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(0, 0);
+                    int bool = rand.nextInt(2);
+
+                    if (bool == 1) {
+                        novaPosicao = new Coordenadas(atualX - 1, atualY);
+                    } else {
+                        novaPosicao = new Coordenadas(atualX, atualY + 1);
+                    }
+
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX > destinoX && atualY > destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(0, 0);
+                    int bool = rand.nextInt(2);
+
+                    if (bool == 1) {
+                        novaPosicao = new Coordenadas(atualX - 1, atualY);
+                    } else {
+                        novaPosicao = new Coordenadas(atualX, atualY - 1);
+                    }
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX > destinoX && atualY == destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(atualX - 1, atualY);
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX == destinoX && atualY < destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(atualX, atualY + 1);
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX == destinoX && atualY > destinoY) {
+                    Coordenadas novaPosicao = new Coordenadas(atualX, atualY - 1);
+                    posicaoAtual = new Coordenadas(novaPosicao);
+                }
+                if (atualX == destinoX && atualY == destinoY) {
+                   // System.out.println("Agente utilizador: " + getAID().getName() + " chegou ao destino: X=" + posicaoAtual.getCoordX() + "Y=" + posicaoAtual.getCoordY() + ".");
+                    concluido = 1;
+                    myAgent.addBehaviour(new InformarFim(nomeEstacaoDestino));
+                }
+
+                if(concluido == 0) {
+                    Utilidade ut = new Utilidade(); // Calcular a distância entre 2 pontos para saber a % de caminho já percorrida
+                    double n1 = ut.distancia2pontos(posicaoInicial.getCoordX(), posicaoInicial.getCoordY(), posicaoDestino.getCoordX(), posicaoDestino.getCoordY());
+                    double n2 = ut.distancia2pontos(posicaoInicial.getCoordX(), posicaoInicial.getCoordY(), posicaoAtual.getCoordX(), posicaoAtual.getCoordY());
+                    distanciaPercorrida = n2 / n1;
+
+                    myAgent.addBehaviour(new InformarMovimento(distanciaPercorrida, posicaoAtual));
+                }
             }
-            if( atualX < destinoX && atualY > destinoY){
-                Coordenadas novaPosicao = new Coordenadas(0,0);
-                int bool = rand.nextInt(2);
-
-                if(bool == 1){novaPosicao = new Coordenadas(atualX+1,atualY);}
-                else {novaPosicao = new Coordenadas(atualX,atualY-1);}
-
-                posicaoAtual = new Coordenadas(novaPosicao);
-            }
-            if( atualX < destinoX && atualY == destinoY){ Coordenadas novaPosicao = new Coordenadas(atualX+1,atualY);
-                                                          posicaoAtual = new Coordenadas(novaPosicao);
-                                                        }
-            if( atualX > destinoX && atualY < destinoY){
-                Coordenadas novaPosicao = new Coordenadas(0,0);
-                int bool = rand.nextInt(2);
-
-                if(bool == 1){novaPosicao = new Coordenadas(atualX-1,atualY);}
-                else {novaPosicao = new Coordenadas(atualX,atualY+1);}
-
-                posicaoAtual = new Coordenadas(novaPosicao);
-            }
-            if( atualX > destinoX && atualY > destinoY){
-                Coordenadas novaPosicao = new Coordenadas(0,0);
-                int bool = rand.nextInt(2);
-
-                if(bool == 1){novaPosicao = new Coordenadas(atualX-1,atualY);}
-                else {novaPosicao = new Coordenadas(atualX,atualY-1);}
-                posicaoAtual = new Coordenadas(novaPosicao);
-            }
-            if( atualX > destinoX && atualY == destinoY){ Coordenadas novaPosicao = new Coordenadas(atualX-1,atualY);
-                                                          posicaoAtual = new Coordenadas(novaPosicao);
-                                                        }
-            if( atualX == destinoX && atualY < destinoY){ Coordenadas novaPosicao = new Coordenadas(atualX,atualY+1);
-                                                          posicaoAtual = new Coordenadas(novaPosicao);
-                                                        }
-            if( atualX == destinoX && atualY > destinoY){ Coordenadas novaPosicao = new Coordenadas(atualX,atualY-1);
-                                                          posicaoAtual = new Coordenadas(novaPosicao);
-                                                        }
-            if( atualX == destinoX && atualY == destinoY){
-                System.out.println("Agente utilizador: " + getAID().getName()+" chegou ao destino: X="+posicaoAtual.getCoordX()+"Y="+posicaoAtual.getCoordY()+".");
-                //doDelete();
-                myAgent.addBehaviour(new InformarFim(nomeEstacaoDestino));
-            }
-
-            Utilidade ut = new Utilidade(); // Calcular a distância entre 2 pontos para saber a % de caminho já percorrida
-            double n1 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoDestino.getCoordX(),posicaoDestino.getCoordY());
-            double n2 = ut.distancia2pontos(posicaoInicial.getCoordX(),posicaoInicial.getCoordY(),posicaoAtual.getCoordX(),posicaoAtual.getCoordY());
-            distanciaPercorrida = n2/n1;
-
-            myAgent.addBehaviour(new InformarMovimento(distanciaPercorrida,posicaoAtual));
         }
     }
 
@@ -228,7 +275,7 @@ public class AgenteUtilizador extends Agent {
                     DFAgentDescription dfd1 = resultados[i];
                     AID estacao = dfd1.getName();
 
-                    String mensagem = "Nova Posicao: &" + posAtual.getCoordX() + "$ %" + posAtual.getCoordY() + "! ?" + dtPercorrida + "< -" + aceitouIncentivo + "@";
+                    String mensagem = "Nova Posicao: &" + posAtual.getCoordX() + "$ %" + posAtual.getCoordY() + "! ?" + dtPercorrida + "< -" + aceitouIncentivo + "@" + "€" + nomeEstacaoDestino + "£";
 
                     ACLMessage aEnviar = new ACLMessage(ACLMessage.INFORM);
                     aEnviar.addReceiver(estacao);
@@ -254,7 +301,7 @@ public class AgenteUtilizador extends Agent {
             aEnviar.addReceiver(receiver);
             aEnviar.setContent("Cheguei ao destino.");
             myAgent.send(aEnviar);
-            myAgent.doDelete();
         }
     }
+
 }

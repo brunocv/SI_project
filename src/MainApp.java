@@ -23,14 +23,16 @@ public class MainApp {
          */
         int numeroDeEstacoes = (int) Math.pow(mapa.getEstacoes(),2);
         ConcurrentHashMap<String,Double> ocupacaoEstacoes = new ConcurrentHashMap<>(30);
+        ConcurrentHashMap<String,Double> ocupacaoFuturaEst = new ConcurrentHashMap<>(30);
         for(int i=0;i<numeroDeEstacoes;i++){
             String nome = "Estacao "+(i+1);
             ocupacaoEstacoes.put(nome,(double)0.50); // No inicio do sistema, todas as estações tem 50% das sua capacidade maxima
                                                    // Pode-se mudar depois se 50 for demasiado baixo...
+            ocupacaoFuturaEst.put(nome,(double)0.50);
         }
 
         for(int i=0;i<numeroDeEstacoes;i++){ // Dar startUp a todas as estações
-            mc.startEstacao((i+1),mapa,ocupacaoEstacoes);
+            mc.startEstacao((i+1),mapa,ocupacaoEstacoes,ocupacaoFuturaEst);
         }
 
         try{ Thread.sleep(1000); } //Sleep para dar tempo as estaçôes de se inscreverem nas Paginas Amarelas
