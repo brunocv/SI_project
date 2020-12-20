@@ -11,10 +11,11 @@ public class Mapa implements Serializable {
     private Map<Integer,Coordenadas> posicaoEstacoes;
     private int tamanho;
     private int estacoes; //estacoes * estacoes = total estacoes
+    private int bicicletas; //Numero maximo de bicicletas que uma estação pode ter
     private boolean escolhido;
     private int[][] zonas;
 
-    public Mapa(Map<Integer, Coordenadas> pE, int tm, int estacoes, boolean esc) {
+    public Mapa(Map<Integer, Coordenadas> pE, int tm, int estacoes, int bc, boolean esc) {
         if(pE != null){
             int tamanho = pE.size();
 
@@ -26,12 +27,13 @@ public class Mapa implements Serializable {
             this.tamanho = tm;
             this.estacoes = estacoes;
             this.escolhido = esc;
-
+            this.bicicletas = bc;
         }
         else{
             this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(30);
             this.tamanho = 20;
             this.estacoes = 2;
+            this.bicicletas = 10;
             this.escolhido = false;
 
         }
@@ -49,12 +51,14 @@ public class Mapa implements Serializable {
             this.tamanho = m.getTamanho();
             this.estacoes = m.getEstacoes();
             this.escolhido = m.isEscolhido();
+            this.bicicletas = m.getBicicletas();
 
         }
         else{
             this.posicaoEstacoes = new HashMap<Integer, Coordenadas>(30);
             this.tamanho = 20;
             this.estacoes = 2;
+            this.bicicletas = 10;
             this.escolhido = false;
 
         }
@@ -64,6 +68,7 @@ public class Mapa implements Serializable {
         this.posicaoEstacoes = new HashMap<>(30);
         this.tamanho = 20;
         this.estacoes = 2;
+        this.bicicletas = 10;
         this.escolhido = false;
     }
 
@@ -74,6 +79,8 @@ public class Mapa implements Serializable {
     public int getEstacoes() {
         return estacoes;
     }
+
+    public int getBicicletas() { return bicicletas; }
 
     public boolean isEscolhido() {
         return escolhido;
@@ -94,6 +101,8 @@ public class Mapa implements Serializable {
     public void setEstacoes(int estacoes) {
         this.estacoes = estacoes;
     }
+
+    public void setBicicletas(int bicicletas) { this.bicicletas = bicicletas; }
 
     public void setEscolhido(boolean escolhido) {
         this.escolhido = escolhido;

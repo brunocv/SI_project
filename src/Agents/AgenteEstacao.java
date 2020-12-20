@@ -37,8 +37,8 @@ public class AgenteEstacao extends Agent {
         ocupacaoFutura = (ConcurrentHashMap<String, Double>) args[3];
         listaDeEspera = new ArrayList<>();
         aCaminho = new ArrayList<>();
-        capacidadeEstacao = 20;
-        bicicletas = 10; // Random starting values, depois talvez seja melhor alterado dependendo do numero
+        capacidadeEstacao = (int) args[4];
+        bicicletas = capacidadeEstacao/2; // Random starting values, depois talvez seja melhor alterado dependendo do numero
                         // de estações que se vai ter. devido ao mapa ser dinamico.
         falhas = 0;
         utilizadorNaArea = new HashMap<>();
@@ -352,7 +352,7 @@ public class AgenteEstacao extends Agent {
 
             Double ocupFutura = ocupacaoFutura.get(estacao); // Ocupação da estação tendo em conta o numero de bicicletas que a têm como destino
 
-            System.out.println("ME:"+ this.getLocalName() +"PASS AND A GO ::: " + ocupFutura);
+            //  System.out.println("ME:"+ this.getLocalName() +"PASS AND A GO ::: " + ocupFutura);
 
             if ((ocup <= 0.25 * tipo) && (ocupFutura <= 0.75))
                 toReturn.put((String) pair.getKey(),ocup);

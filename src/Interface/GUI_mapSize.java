@@ -13,8 +13,10 @@ public class GUI_mapSize extends JFrame{
     private JButton btnOK;
     private JComboBox cbTamanho;
     private JComboBox cbEstacoes;
+    private JComboBox cbBicicletas;
     private int tamanho;
     private int estacoes;
+    private int bicicletas;
 
     public GUI_mapSize(String title, Mapa m) {
         super(title);
@@ -25,6 +27,7 @@ public class GUI_mapSize extends JFrame{
 
         this.tamanho = 20;
         this.estacoes = 2;
+        this.bicicletas = 10;
 
         cbTamanho.addActionListener(new ActionListener() {
             @Override
@@ -48,12 +51,19 @@ public class GUI_mapSize extends JFrame{
         btnOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(null, "Tamanho: " + tamanho + " Estações: " + estacoes + " \n");
+                JOptionPane.showMessageDialog(null, "Tamanho: " + tamanho + " Estações: " + estacoes + " Bicicletas: " + bicicletas + " \n");
                 m.setEscolhido(true);
                 dispose();
             }
         });
 
+        cbBicicletas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bicicletas = Integer.parseInt(cbBicicletas.getSelectedItem().toString());
+                m.setBicicletas(bicicletas);
+            }
+        });
     }
 
 }
