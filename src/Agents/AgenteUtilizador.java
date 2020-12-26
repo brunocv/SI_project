@@ -16,6 +16,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Random;
 
+// Responsavel por fazer  uma  viagem  entre  duas  estaçoes
 public class AgenteUtilizador extends Agent {
 
     private Coordenadas posicaoInicial;
@@ -154,6 +155,7 @@ public class AgenteUtilizador extends Agent {
     public int getGreed() { return greediness; }
 
     private class Movimento extends TickerBehaviour{
+        // // Behaviour responsavel pela movimentação do utilizador
         public Movimento(Agent a,long timeout){super(a,timeout);}
 
         protected void onTick(){
@@ -253,6 +255,7 @@ public class AgenteUtilizador extends Agent {
         double dtPercorrida;
         Coordenadas posAtual;
 
+        // // Behaviour responsavel por informar um movimento do utilizador á estação
         public InformarMovimento(double distanciaPercorrida, Coordenadas posicaoAtual){
             dtPercorrida = distanciaPercorrida;
             posAtual = posicaoAtual.clone();
@@ -285,7 +288,7 @@ public class AgenteUtilizador extends Agent {
             } catch (FIPAException fe){ fe.printStackTrace(); }
         }
     }
-
+// // // Behaviour responsavel por informar que chegou á estcao final
     private class InformarFim extends OneShotBehaviour{
 
         private String nomeEstacao;

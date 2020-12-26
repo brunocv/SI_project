@@ -5,16 +5,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+// Classe que contem as informações egerais do mapa
 public class Mapa implements Serializable {
 
     private Map<Integer,Coordenadas> posicaoEstacoes;
-    private int tamanho;
-    private int estacoes; //estacoes * estacoes = total estacoes
+    private int tamanho; // Tamanho do mapa
+    private int estacoes; //estacoes * estacoes = total estacoes (nr de estações)
     private int bicicletas; //Numero maximo de bicicletas que uma estação pode ter
-    private boolean escolhido;
-    private int[][] zonas;
+    private boolean escolhido; // Boolean que verifica se o tamanho do mapa e o numero de estações ja foi escolhido
+    private int[][] zonas; // Array com as posicoes que cada estação controla
 
+    // Construtor parametrizado que recebe as posicoes das estações, o tamanho do mapa, o numero de estações e um boolean que verifica se o tamanho do mapa e o numero de estações ja foi escolhido
     public Mapa(Map<Integer, Coordenadas> pE, int tm, int estacoes, int bc, boolean esc) {
         if(pE != null){
             int tamanho = pE.size();
@@ -38,7 +39,7 @@ public class Mapa implements Serializable {
 
         }
     }
-
+    // Construtor de copia de Mapa
     public Mapa(Mapa m){
         if(m != null){
             int tamanho = m.getPosicaoEstacoes().size();
@@ -63,7 +64,7 @@ public class Mapa implements Serializable {
 
         }
     }
-
+    // Construtor por omissão de Mapa
     public Mapa() {
         this.posicaoEstacoes = new HashMap<>(30);
         this.tamanho = 20;
@@ -143,7 +144,7 @@ public class Mapa implements Serializable {
         return new Mapa(this);
     }
 
-    //Alocar com 0's o mapa inicial
+    //Metodo que Aloca com 0's o mapa inicial para nao existiram valores nulos
     public void mapaMatrix(){
 
         this.zonas = new int[this.tamanho][this.tamanho];
@@ -156,7 +157,7 @@ public class Mapa implements Serializable {
 
     }
 
-    //gerar as posições que cada estação cobre
+    //Metodo que gera as posições que cada estação cobre
     public void generateMapa(int y,int iteracao,int valor){
 
         int espaco = this.tamanho / this.estacoes;
@@ -180,7 +181,7 @@ public class Mapa implements Serializable {
         generateMapa((iteracao+1)*espaco,iteracao+1,valor);
     }
 
-    //imprimir mapa via texto
+    //Metodo que imprime o mapa via texto
     public void mapaMatrixPrint(){
 
         for (int[] row : this.zonas) {
@@ -191,7 +192,7 @@ public class Mapa implements Serializable {
             System.out.print(" \n");
         }
     }
-
+    // Metodo que imprime as coodernadas de cada estação
     public void printEstacoes(){
         for (Map.Entry<Integer, Coordenadas> mapEntry : this.posicaoEstacoes.entrySet()) {
             System.out.print("Estacao: "+mapEntry.getKey() + " Coordenadas: " + mapEntry.getValue().toString());

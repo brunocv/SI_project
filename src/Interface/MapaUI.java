@@ -12,11 +12,12 @@ import java.util.Map;
 
 public class MapaUI {
 
-    private Mapa mapa;
+    private Mapa mapa; // Mapa com posicoes e nr de estações, numero maximo de users, tamanho
     private JPanel jpanel;
-    private Cell cell[][];
+    private Cell cell[][]; // Celulas do mapa (cada posicao)
     private List<Coordenadas> posicoesAntigas;
 
+    // Construtor parametrizado
     public MapaUI(Mapa mapa){
         this.mapa = mapa;
         this.jpanel = new JPanel();
@@ -27,7 +28,7 @@ public class MapaUI {
         this.posicoesAntigas = new ArrayList<>(200);
         initCell();
     }
-
+    // inicia todas as celulas com
     private void initCell(){
         for (int i = 0; i < this.mapa.getTamanho(); i++){
             for (int j = 0; j < this.mapa.getTamanho(); j++){
@@ -40,7 +41,7 @@ public class MapaUI {
 
        draw(1,mapa.getPosicaoEstacoes());
     }
-
+    // Desenha para cada posicao a imagem definida
     public void draw(int objeto, Map<Integer,Coordenadas> estacoes){
         for (Map.Entry<Integer, Coordenadas> mapEntry : estacoes.entrySet()) {
             Cell c = this.cell[mapEntry.getValue().getCoordX()][mapEntry.getValue().getCoordY()];
@@ -49,7 +50,7 @@ public class MapaUI {
         }
 
     }
-
+    // Desenha nas posicoes dos utilizadores a imagem correspondente aos utilizadores
     public void drawUtilizadores(List<Coordenadas> utilizadores){
 
         for(Coordenadas c : this.posicoesAntigas){

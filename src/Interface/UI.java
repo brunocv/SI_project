@@ -18,10 +18,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
+    // Classe que contem toda a informação do agente Interface, contendo todos os paineis e respetivas informações
 public class UI {
 
-    private Mapa mapa;
+    private Mapa mapa; // Variavel que contem a informação do mapa
     private JFrame mainFrame;
     private JFrame histogramaBicicletas;
     private JFrame graficoFail;
@@ -30,11 +30,12 @@ public class UI {
     private JPanel panel_1; //mapa
     private JPanel panel_2; //ocupacao
     private JPanel graficoBicicletas; //histograma que diz quantas bicicletas cada estacao tem
-    private JPanel graficoFalhas;
+    private JPanel graficoFalhas; // Grafico de nr de vrzes que estação fica com 0 bicicletas
     private AgenteInterface agente;
     private MapaUI mapaui;
     private JLabel texto;
 
+    // Construtor que recebe um mapa com as posicoes das estações, nr de estações, tamanho do mapa e o agente Interface
     public UI(Mapa mapa, AgenteInterface agente){
         this.mapa = mapa;
         this.agente = agente;
@@ -82,7 +83,7 @@ public class UI {
         frameInitialize();
 
     }
-
+    // Grafico de barras da disposicao de bicicletas pelas estações
     public void initiGraphics(){
         histogramaBicicletas = new JFrame();
         histogramaBicicletas.setTitle("Gráfico de barras de disposição de bicicletas");
@@ -92,7 +93,7 @@ public class UI {
         histogramaBicicletas.setLocationRelativeTo(null);
 
     }
-
+    // Grafico de barras de vezes que cada estação teve 0 bicicletas
     public void initiGraphics2(){
         graficoFail = new JFrame();
         graficoFail.setTitle("Gráfico de barras de vezes que estação teve 0 bicicletas");
@@ -106,7 +107,7 @@ public class UI {
     public JFrame getJFrame(){
         return this.mainFrame;
     }
-
+    // Inicialização do Frame completo com os varios paineis que o constituem
     private void frameInitialize() {
 
         mainFrame = new JFrame();
@@ -121,7 +122,7 @@ public class UI {
         mainFrame.add(buttonVazio);
 
     }
-
+    // Draw da Ocupação de cada estação
     public void drawOcupacaoEstacao(String ocupacoes){
 
         texto.setText(ocupacoes);
@@ -129,14 +130,14 @@ public class UI {
         panel_1.revalidate();
 
     }
-
+    // Draw de cada utilizador no mapa
     public void drawUtilizadores(List<Coordenadas> utilizadores){
         mapaui.drawUtilizadores(utilizadores);
         mapaui.draw(1,mapa.getPosicaoEstacoes());
         panel_2.repaint();
     }
 
-
+    // Caracteristicas do grafico de disposicao de bicicletas
     public void drawBicicletas(int bicicletas[]){
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 
@@ -158,7 +159,7 @@ public class UI {
         graficoBicicletas.validate();
         histogramaBicicletas.validate();
     }
-
+        // Caracteristicas do grafico de falhas das estações
     public void drawFalhas(int falhas[]){
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 

@@ -16,8 +16,8 @@ import java.util.Map;
 
 public class AgenteSystem extends Agent {
 
-    private int numero_utilizador;
-    private Mapa mapa;
+    private int numero_utilizador; // id do user
+    private Mapa mapa; // info do mapa
     private MainContainer mc;
 
     protected void setup() {
@@ -40,7 +40,7 @@ public class AgenteSystem extends Agent {
         System.out.println("Agente System terminou: " + getAID().getName());
 
     }
-
+    // Responsavel pela criação de novos Agentes Utilizador utilizando um ticker behaviour
     private class gerarUtilizadores extends TickerBehaviour{
         public gerarUtilizadores(Agent a,long timeout) {super(a,timeout);}
 
@@ -53,7 +53,7 @@ public class AgenteSystem extends Agent {
             //}
         }
     }
-
+    // utilizado  para  poder  comunicar  com  o  utilizador  de  modo  a fornecer informaçao que o assiste no calculo da escolha de aceitar ou recusar o incentivo proposto por uma estacao, utilizando um cyrclicBehaviour
     private class receiveMessages extends CyclicBehaviour {
         public void action(){
             ACLMessage msg = myAgent.receive();

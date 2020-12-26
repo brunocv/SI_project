@@ -19,9 +19,10 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.*;
 
+// responsavel pela actualizacao e funcionamento da interface fornecida ao utilizador pelo sistema
 public class AgenteInterface extends Agent {
 
-    private Mapa mapa;
+    private Mapa mapa; // info do mapa
     private UI ui;
     private String ocupacaoEstacao;
     private List<Coordenadas> posicaoUtilizadores;

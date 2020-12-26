@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+// responsavel por saber quais os Agentes Utilizador na sua ́area, e dependendo das taxas de ocupacao das estacoes incentivar utilizadores apartirem para um novo destino
 public class AgenteEstacao extends Agent {
 
     private Coordenadas posicaoEstacao;
@@ -53,7 +54,7 @@ public class AgenteEstacao extends Agent {
         DFManager.deRegister(this);
 
     }
-
+        // Verifica tipo de mensagens recebidas
     private class ReceiveMessages extends CyclicBehaviour{
 
         public void action(){
