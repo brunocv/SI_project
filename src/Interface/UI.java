@@ -96,7 +96,7 @@ public class UI {
     // Grafico de barras de vezes que cada estação teve 0 bicicletas
     public void initiGraphics2(){
         graficoFail = new JFrame();
-        graficoFail.setTitle("Gráfico de barras de vezes que estação teve 0 bicicletas");
+        graficoFail.setTitle("Gráfico de barras de vezes que mostra falhas");
         graficoFail.getContentPane().setLayout(null);
         graficoFail.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         graficoFail.setSize(900,900);
