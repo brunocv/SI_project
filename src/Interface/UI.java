@@ -18,7 +18,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-    // Classe que contem toda a informação do agente Interface, contendo todos os paineis e respetivas informações
+
 public class UI {
 
     private Mapa mapa; // Variavel que contem a informação do mapa
@@ -35,7 +35,6 @@ public class UI {
     private MapaUI mapaui;
     private JLabel texto;
 
-    // Construtor que recebe um mapa com as posicoes das estações, nr de estações, tamanho do mapa e o agente Interface
     public UI(Mapa mapa, AgenteInterface agente){
         this.mapa = mapa;
         this.agente = agente;
@@ -83,7 +82,7 @@ public class UI {
         frameInitialize();
 
     }
-    // Grafico de barras da disposicao de bicicletas pelas estações
+
     public void initiGraphics(){
         histogramaBicicletas = new JFrame();
         histogramaBicicletas.setTitle("Gráfico de barras de disposição de bicicletas");
@@ -93,7 +92,7 @@ public class UI {
         histogramaBicicletas.setLocationRelativeTo(null);
 
     }
-    // Grafico de barras de vezes que cada estação teve 0 bicicletas
+
     public void initiGraphics2(){
         graficoFail = new JFrame();
         graficoFail.setTitle("Gráfico de barras de vezes que mostra falhas");
@@ -107,7 +106,7 @@ public class UI {
     public JFrame getJFrame(){
         return this.mainFrame;
     }
-    // Inicialização do Frame completo com os varios paineis que o constituem
+
     private void frameInitialize() {
 
         mainFrame = new JFrame();
@@ -159,7 +158,7 @@ public class UI {
         graficoBicicletas.validate();
         histogramaBicicletas.validate();
     }
-        // Caracteristicas do grafico de falhas das estações
+    
     public void drawFalhas(int falhas[]){
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 
