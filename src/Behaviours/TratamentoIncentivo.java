@@ -17,7 +17,6 @@ import jade.lang.acl.UnreadableException;
 import java.io.IOException;
 import java.util.*;
 
-// O objetivo desta classe é eceber as propostas de destinos alternativos propostos pela estação e efetuar uma decisão em relaç̃ao ao incentivo proposto
 public class TratamentoIncentivo extends CyclicBehaviour {
 
     AgenteUtilizador au;
