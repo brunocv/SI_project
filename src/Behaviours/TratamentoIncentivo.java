@@ -102,12 +102,17 @@ public class TratamentoIncentivo extends CyclicBehaviour {
 
                             Double greediness = 0.1 * au.getGreed();
 
-                            System.out.println("ME: "+ myAgent.getAID().getName() + " FATOR: "+ fatorFinal +" Station: " + estacao);
                             if (fatorFinal >= ( 0.9+greediness )) {
                                 fatorDeEscolha.put(estacao, fatorFinal);
                             }
                         } else {
-                            fatorDeEscolha.put(estacao, 20.0);
+                            double fator = 1.2;
+
+                            Double greediness = 0.1 * au.getGreed();
+
+                            if (fator >= ( 0.9+greediness )) {
+                                fatorDeEscolha.put(estacao, fator);
+                            }
                         }
                     }
                 }
@@ -125,12 +130,14 @@ public class TratamentoIncentivo extends CyclicBehaviour {
                         maxEntry = entry;
                 }
 
+                System.out.println("Eu: "+ myAgent.getAID().getName() + " aceitei o incentivo: "+ maxEntry.getValue() +" para a estação : " + maxEntry.getKey());
                 au.setNewDestino( maxEntry.getKey() , proposicoes.get(maxEntry.getKey()) );
 
                 respostaIncentivo.setContent(maxEntry.getKey());
                 respostaIncentivo.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 
             }else{
+                System.out.println("Eu: "+ myAgent.getAID().getName() + " não aceitei incentivos ");
                 respostaIncentivo.setPerformative(ACLMessage.REJECT_PROPOSAL);
                 au.reduceValue();
             }

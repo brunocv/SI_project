@@ -62,7 +62,6 @@ public class AgenteEstacao extends Agent {
             ACLMessage msg = receive();
             if(msg != null){
 
-              //  System.out.println("ME:" + myAgent.getAID().getName()+ "-" + aCaminho.toString());
                 if(msg.getPerformative() == ACLMessage.REQUEST){
 
                     parseRequests(msg);
@@ -143,7 +142,7 @@ public class AgenteEstacao extends Agent {
 
                     double percorrido = Double.parseDouble(mensagem.substring(index5, index6));
                     int incentivo = Integer.parseInt(mensagem.substring(index7, index8));
-                    //System.out.println("User :" + msg.getSender().getName() + " Percorrido:" + percorrido );
+
                     if (percorrido >= 0.75 && incentivo <= 0) {
 
                         HashMap<String, Double> rec = new HashMap<>();
@@ -261,7 +260,6 @@ public class AgenteEstacao extends Agent {
             String endereco = msg.getSender().getName();
             int index = endereco.indexOf("@");
             String nome = endereco.substring(0,index);
-            System.out.println("YO YO");
             aCaminho.remove(nome);
 
             String fullName = myAgent.getAID().getName();
@@ -352,8 +350,6 @@ public class AgenteEstacao extends Agent {
             Double ocup = (Double) pair.getValue(); // Ocupação da Estação
 
             Double ocupFutura = ocupacaoFutura.get(estacao); // Ocupação da estação tendo em conta o numero de bicicletas que a têm como destino
-
-            //  System.out.println("ME:"+ this.getLocalName() +"PASS AND A GO ::: " + ocupFutura);
 
             if ((ocup <= 0.25 * tipo) && (ocupFutura <= 0.75))
                 toReturn.put((String) pair.getKey(),ocup);
