@@ -11,7 +11,6 @@ import jade.lang.acl.ACLMessage;
 
 public class PedirOcupacao extends TickerBehaviour {
 
-    // Esta classe é responsavel pelo  envio  de  mensagens  a estaç̃oes  para  pedir  a  sua  ocupaçao,  para  isso  utiliza  um TickerBehaviour com um tick definido em 4 segundos
     public PedirOcupacao(Agent a, long timeout){
         super(a,timeout);
     }
