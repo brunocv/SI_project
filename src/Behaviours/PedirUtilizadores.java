@@ -8,7 +8,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
-    // Esta classe serve para saber qual a posicao dos utilizadores, e  pedido   ́as  estações  as  posiç̃oes  dos Agentes utilizador presentes na sua zona de x em x tempo.
+  
 public class PedirUtilizadores extends TickerBehaviour {
     public PedirUtilizadores(Agent a, long timeout){
         super(a,timeout);
