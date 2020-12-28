@@ -95,7 +95,7 @@ public class UI {
 
     public void initiGraphics2(){
         graficoFail = new JFrame();
-        graficoFail.setTitle("Gráfico de barras de vezes que mostra falhas");
+        graficoFail.setTitle("Gráfico de barras que mostra falhas");
         graficoFail.getContentPane().setLayout(null);
         graficoFail.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         graficoFail.setSize(900,900);
